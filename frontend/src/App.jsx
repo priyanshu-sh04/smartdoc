@@ -1,0 +1,242 @@
+import React from "react";
+import {
+  Shield,
+  FileText,
+  RefreshCw,
+  Brain,
+  Database,
+  User,
+  Building,
+  CheckCircle,
+  ArrowRight,
+} from "lucide-react";
+import DocumentTypeList from "./components/DocumentTypeList";
+const Navbar = () => (
+  <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-lg z-50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex justify-between items-center h-20">
+        <div className="flex items-center">
+          <Shield className="h-10 w-10 text-blue-600" />
+          <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">
+            SmartDoc
+          </span>
+        </div>
+
+        <div className="hidden md:flex items-center space-x-10">
+          <a
+            href="#features"
+            className="text-gray-600 hover:text-blue-600 transition"
+          >
+            Features
+          </a>
+          <a
+            href="#users"
+            className="text-gray-600 hover:text-blue-600 transition"
+          >
+            Users
+          </a>
+          <a
+            href="#documents"
+            className="text-gray-600 hover:text-blue-600 transition"
+          >
+            Documents
+          </a>
+          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+            Get Started
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+);
+
+const HeroSection = () => (
+  <div className="pt-32 pb-24 bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row items-center justify-between">
+        <div className="lg:w-1/2 text-left lg:pr-12">
+          <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight">
+            Transform Document{" "}
+            <span className="text-blue-600">Verification</span> &{" "}
+            <span className="text-blue-600">Security</span>
+          </h1>
+          <p className="text-xl text-gray-600 mb-10">
+            Experience the future of document management with our
+            blockchain-powered platform. Secure, verify, and manage documents
+            with unmatched reliability.
+          </p>
+          <div className="flex space-x-6">
+            <button className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 flex items-center text-lg">
+              Start Verifying
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </button>
+            <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-50 transition duration-300 text-lg">
+              Learn More
+            </button>
+          </div>
+        </div>
+        <div className="lg:w-1/2 mt-12 lg:mt-0">
+          <div className="relative">
+            <div className="absolute -top-6 -left-6 w-72 h-72 bg-blue-200 rounded-full filter blur-3xl opacity-30"></div>
+            <div className="absolute -bottom-6 -right-6 w-72 h-72 bg-indigo-200 rounded-full filter blur-3xl opacity-30"></div>
+            <img
+              src="/api/placeholder/600/400"
+              alt="Document Security"
+              className="relative rounded-2xl shadow-2xl transform hover:scale-105 transition duration-500"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const FeatureCard = ({ icon: Icon, title, description }) => (
+  <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+    <div className="h-16 w-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+      <Icon className="h-8 w-8 text-blue-600" />
+    </div>
+    <h3 className="text-xl font-semibold text-gray-900 mb-4">{title}</h3>
+    <p className="text-gray-600 leading-relaxed">{description}</p>
+  </div>
+);
+
+const FeaturesSection = () => (
+  <div id="features" className="py-24 bg-white relative overflow-hidden">
+    <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-100 rounded-full filter blur-3xl opacity-30"></div>
+    <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-100 rounded-full filter blur-3xl opacity-30"></div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl font-bold mb-4">Powerful Features</h2>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Experience the next generation of document management with our
+          cutting-edge features
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <FeatureCard
+          icon={RefreshCw}
+          title="Secure Document Transfer"
+          description="Transfer documents securely between organizations and individuals with end-to-end encryption and real-time tracking."
+        />
+        <FeatureCard
+          icon={FileText}
+          title="Comprehensive Support"
+          description="Handle all types of documents from ID cards to passports with our versatile platform designed for maximum compatibility."
+        />
+        <FeatureCard
+          icon={Brain}
+          title="AI-Powered OCR"
+          description="Advanced AI technology detects document tampering and verifies authenticity with unprecedented accuracy."
+        />
+        <FeatureCard
+          icon={CheckCircle}
+          title="Cross Verification"
+          description="Verify documents across multiple trusted sources to ensure complete authenticity and compliance."
+        />
+        <FeatureCard
+          icon={Database}
+          title="Blockchain Storage"
+          description="Immutable and secure document storage using advanced blockchain technology for ultimate security."
+        />
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl transform rotate-1"></div>
+          <div className="relative bg-white p-8 rounded-2xl shadow-lg">
+            <img
+              src="/api/placeholder/400/200"
+              alt="Security Features"
+              className="rounded-lg mb-6"
+            />
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              Enterprise Security
+            </h3>
+            <p className="text-gray-600 leading-relaxed">
+              Military-grade encryption and security protocols to protect your
+              sensitive documents.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const UserTypeCard = ({ icon: Icon, title, description, image }) => (
+  <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+    <div className="h-20 w-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <Icon className="h-10 w-10 text-blue-600" />
+    </div>
+    <img
+      src={image}
+      alt={title}
+      className="w-full h-40 object-cover rounded-xl mb-6"
+    />
+    <h3 className="text-2xl font-semibold text-gray-900 mb-4">{title}</h3>
+    <p className="text-gray-600 leading-relaxed">{description}</p>
+  </div>
+);
+
+const UsersSection = () => (
+  <div id="users" className="py-24 bg-gray-50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl font-bold mb-4">Who Can Use SmartDoc?</h2>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Our platform is designed to serve various user needs with specialized
+          features
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <UserTypeCard
+          icon={User}
+          title="Individuals"
+          description="Store and share your personal documents securely. Control who can access your information with advanced privacy settings."
+          image="/api/placeholder/400/200"
+        />
+        <UserTypeCard
+          icon={Building}
+          title="Document Issuers"
+          description="Issue tamper-proof digital documents with blockchain verification and maintain complete audit trails."
+          image="/api/placeholder/400/200"
+        />
+        <UserTypeCard
+          icon={CheckCircle}
+          title="Verifiers"
+          description="Quickly verify document authenticity with our advanced verification tools and automated compliance checks."
+          image="/api/placeholder/400/200"
+        />
+      </div>
+    </div>
+  </div>
+);
+
+
+
+const DocumentTypesSection = () => (
+  <div id="documents" className="py-24 bg-white relative overflow-hidden">
+    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-50/50 to-transparent"></div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl font-bold mb-4">Documents We Handle</h2>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Comprehensive support for all your document verification needs
+        </p>
+      </div>
+
+        <DocumentTypeList />
+    
+    </div>
+  </div>
+);
+
+const HomePage = () => (
+  <div className="min-h-screen">
+    <Navbar />
+    <HeroSection />
+    <FeaturesSection />
+    <UsersSection />
+    <DocumentTypesSection />
+  </div>
+);
+
+export default HomePage;

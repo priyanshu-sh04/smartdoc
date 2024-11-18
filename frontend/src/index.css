@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DocumentEditor.css */
+
+/* Ensure there's no conflict between Quill's styling and your app's styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .quill-editor {
+    height: 500px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  /* For Quill toolbar styling */
+  .ql-toolbar {
+    background-color: #efefef;
+    border: none;
+    border-radius: 8px;
+  }
+  
+  .ql-toolbar .ql-picker-label {
+    font-weight: bold;
+  }
+  
+  .ql-toolbar .ql-formats {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .ql-container {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+  }
+  
+  .ql-editor {
+    padding: 10px;
+    min-height: 300px;
+  }
+  
