@@ -11,14 +11,15 @@ app.use(express.json());
 
 // MongoDB Connection
 connectDB();
-// In server.js, before route definitions
+
 app.use((req, res, next) => {
     console.log('Request Method:', req.method);
     console.log('Request Path:', req.path);
     console.log('Content-Type:', req.get('Content-Type'));
     console.log('Request Body:', req.body);
     next();
-  });
+  })
+
 app.use("/api/documents", documentRoutes);
 app.use("/api/issuer", issuerRoutes);
 

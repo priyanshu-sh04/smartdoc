@@ -11,6 +11,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import DocumentTypeList from "./components/DocumentTypeList";
+import { Link } from "react-router-dom";
 const Navbar = () => (
   <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-lg z-50">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,9 +42,11 @@ const Navbar = () => (
           >
             Documents
           </a>
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-            Get Started
-          </button>
+          <Link to="/login">
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+              Get Started
+            </button>
+          </Link>
         </div>
       </div>
     </div>
@@ -66,10 +69,12 @@ const HeroSection = () => (
             with unmatched reliability.
           </p>
           <div className="flex space-x-6">
-            <button className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 flex items-center text-lg">
-              Start Verifying
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </button>
+            <Link to="/login">
+              <button className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 flex items-center text-lg">
+                Start Verifying
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </button>
+            </Link>
             <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-50 transition duration-300 text-lg">
               Learn More
             </button>
@@ -210,8 +215,6 @@ const UsersSection = () => (
   </div>
 );
 
-
-
 const DocumentTypesSection = () => (
   <div id="documents" className="py-24 bg-white relative overflow-hidden">
     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-50/50 to-transparent"></div>
@@ -223,8 +226,7 @@ const DocumentTypesSection = () => (
         </p>
       </div>
 
-        <DocumentTypeList />
-    
+      <DocumentTypeList />
     </div>
   </div>
 );
