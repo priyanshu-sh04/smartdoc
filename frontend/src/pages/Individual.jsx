@@ -16,7 +16,7 @@ const Dashboard = () => {
     {
       title: "Identity Card",
       issuer: "National Identity Authority",
-      icon: "https://via.placeholder.com/48x48", // Corrected
+      icon: "https://via.placeholder.com/48x48", 
       docId: "ID-2024-001"
     },
     {
@@ -37,17 +37,17 @@ const Dashboard = () => {
     {
       title: "Driving License",
       description: "Apply for or renew your driving license",
-      icon: "https://via.placeholder.com/64x64" // Corrected
+      icon: "https://via.placeholder.com/64x64" 
     },
     {
       title: "Vaccination Record",
       description: "Access your vaccination certificates",
-      icon: "https://via.placeholder.com/64x64" // Corrected
+      icon: "https://via.placeholder.com/64x64" 
     },
     {
       title: "Property Documents",
       description: "Manage your property records",
-      icon: "https://via.placeholder.com/64x64" // Corrected
+      icon: "https://via.placeholder.com/64x64" 
     }
   ];
   
