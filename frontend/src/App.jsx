@@ -17,6 +17,7 @@ const Navbar = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-20">
         <div className="flex items-center">
+        <img src="https://img1.digitallocker.gov.in/assets/img/icons/National-Emblem.png" className="h-max w-10 border-r-2 mr-2 pr-2 border-black"/>
           <Shield className="h-10 w-10 text-blue-600" />
           <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">
             SmartDoc
