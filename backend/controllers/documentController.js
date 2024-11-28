@@ -76,3 +76,19 @@ export const uploadDocument = async (req, res) => {
     });
   }
 };
+
+export const getAllDocuments = async (req, res) => {
+  try {
+    const documents = await Document.find();
+    res.status(200).json({
+      message: 'Documents retrieved successfully',
+      documents,
+    });
+  } catch (error) {
+    console.error('Error fetching documents:', error);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      details: error.message,
+    });
+  }
+};

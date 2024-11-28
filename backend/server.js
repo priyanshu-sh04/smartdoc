@@ -3,22 +3,21 @@ import connectDB from "./utils/connectDB.js";
 import documentRoutes from "./routes/documentRoutes.js";
 import issuerRoutes from "./routes/issuerRoutes.js";
 import "dotenv/config";
+import cors from "cors";
 
 const app = express();
-
-// Middleware
+app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
 connectDB();
 
 app.use((req, res, next) => {
-    console.log('Request Method:', req.method);
-    console.log('Request Path:', req.path);
-    console.log('Content-Type:', req.get('Content-Type'));
-    console.log('Request Body:', req.body);
-    next();
-  })
+  console.log("Request Method:", req.method);
+  console.log("Request Path:", req.path);
+  console.log("Content-Type:", req.get("Content-Type"));
+  console.log("Request Body:", req.body);
+  next();
+});
 
 app.use("/api/documents", documentRoutes);
 app.use("/api/issuer", issuerRoutes);
