@@ -11,7 +11,7 @@ const pinata = new PinataSDK({
 
 export const uploadDocument = async (req, res) => {
   try {
-    const { title, description, userId } = req.body;
+    const { title, description } = req.body;
     const file = req.file;
 
     // Debugging: Log the entire request body and file
