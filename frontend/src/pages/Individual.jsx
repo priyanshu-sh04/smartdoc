@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Cross from "./Cross.svg";
+import Cross from "./cross.svg";
 import axios from "axios";
 import {
   FileText,
