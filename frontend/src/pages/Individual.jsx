@@ -18,9 +18,9 @@ const Dashboard = () => {
   const [files, setFiles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [DocumentTypeValue, setDocumentType] = useState("");
-const[documentTitle,setDocumentTitle]=useState('')
-const [documentDescription,setDocumentDescription]=useState('')
-console.log(files)
+  const [documentTitle, setDocumentTitle] = useState("");
+  const [documentDescription, setDocumentDescription] = useState("");
+  console.log(files);
   const handleDragOver = (event) => {
     event.preventDefault();
   };
@@ -37,32 +37,32 @@ console.log(files)
   const handleUpload = async () => {
     const formData = new FormData();
 
-
     files.forEach((file, index) => {
       formData.append(`file`, file);
     });
-formData.append('title',documentTitle)
-formData.append('description',documentDescription)
+    formData.append("title", documentTitle);
+    formData.append("description", documentDescription);
 
     try {
-const response =await axios.post ('http://localhost:5000/api/documents/upload', 
-  formData,
-  {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  }
-);
+      const response = await axios.post(
+        "http://localhost:5000/api/documents/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.ok) {
-        console.log('Files uploaded successfully');
+        console.log("Files uploaded successfully");
       } else {
-        console.error('Failed to upload files');
+        console.error("Failed to upload files");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
-  }
+  };
   useEffect(() => {
     fetchDocuments();
   }, []);
@@ -232,49 +232,57 @@ const response =await axios.post ('http://localhost:5000/api/documents/upload',
             style={{
               display: isVisible ? "flex" : "none",
               backgroundColor: "white",
-              justifyContent:'center' ,
+              justifyContent: "center",
               alignItems: "center",
               position: "absolute",
               left: "40%",
               boxShadow: "0 0 1px 2px #DDDDDD",
-              paddingTop:20,
-              paddingBottom:40,
-              paddingLeft:20,
-              paddingRight:20,
+              paddingTop: 20,
+              paddingBottom: 40,
+              paddingLeft: 20,
+              paddingRight: 20,
               borderRadius: 6,
               flexDirection: "column",
               gap: 20,
             }}
           >
             <img
-            
-            src={Cross 
-            } alt="Close" style={{cursor:'pointer',alignSelf:'flex-end',height:15}} onClick={() => setIsVisible(false)} />
-            <p style={{fontWeight:500,fontSize:'20px'}}>Issue New Document</p>
+              src={Cross}
+              alt="Close"
+              style={{ cursor: "pointer", alignSelf: "flex-end", height: 15 }}
+              onClick={() => setIsVisible(false)}
+            />
+            <p style={{ fontWeight: 500, fontSize: "20px" }}>
+              Issue New Document
+            </p>
             <div
-            id="drag-drop-zone"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        style={{
-          border: '2px dashed #DDDDDD',
-          borderRadius: '10px',
-          padding: '20px',
-          textAlign: 'center',
-          width: 300,
-          justifyContent:'center',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <p>Drag & Drop your files here</p>
-        <p>or</p>
-        <div>
-  
-        <input style={{width:200,fontSize:12,marginTop:20}}    type="file" multiple onChange={handleFileSelect} />
-        </div>
-      </div>
-      {/* <ul>
+              id="drag-drop-zone"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              style={{
+                border: "2px dashed #DDDDDD",
+                borderRadius: "10px",
+                padding: "20px",
+                textAlign: "center",
+                width: 300,
+                justifyContent: "center",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <p>Drag & Drop your files here</p>
+              <p>or</p>
+              <div>
+                <input
+                  style={{ width: 200, fontSize: 12, marginTop: 20 }}
+                  type="file"
+                  multiple
+                  onChange={handleFileSelect}
+                />
+              </div>
+            </div>
+            {/* <ul>
         {files.map((file, index) => (
           <li key={index}>{file.name}</li>
         ))}
@@ -316,7 +324,7 @@ const response =await axios.post ('http://localhost:5000/api/documents/upload',
               multiple
               placeholder="Document Description"
               value={documentDescription}
-              aria-multiline  
+              aria-multiline
               onChange={(e) => setDocumentDescription(e.target.value)}
               style={{
                 borderRadius: 6,
@@ -336,7 +344,7 @@ const response =await axios.post ('http://localhost:5000/api/documents/upload',
                 padding: 10,
                 width: 300,
               }}
-              onClick={()=>handleUpload()}
+              onClick={() => handleUpload()}
             >
               Issue Document
             </button>
