@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Cross from "./Cross.svg";
+import axios from "axios";
 import {
   FileText,
   Search,
@@ -13,7 +15,54 @@ import {
 
 const Dashboard = () => {
   const [documents, setDocuments] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [DocumentTypeValue, setDocumentType] = useState("");
+const[documentTitle,setDocumentTitle]=useState('')
+const [documentDescription,setDocumentDescription]=useState('')
+console.log(files)
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
 
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const droppedFiles = Array.from(event.dataTransfer.files);
+    setFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
+  };
+  const handleFileSelect = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setFiles([...selectedFiles]);
+  };
+  const handleUpload = async () => {
+    const formData = new FormData();
+
+
+    files.forEach((file, index) => {
+      formData.append(`file`, file);
+    });
+formData.append('title',documentTitle)
+formData.append('description',documentDescription)
+
+    try {
+const response =await axios.post ('http://localhost:5000/api/documents/upload', 
+  formData,
+  {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }
+);
+
+      if (response.ok) {
+        console.log('Files uploaded successfully');
+      } else {
+        console.error('Failed to upload files');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   useEffect(() => {
     fetchDocuments();
   }, []);
@@ -171,9 +220,127 @@ const Dashboard = () => {
               </div>
             ))}
           </div>
-          <button className="bg-blue-500 hover:bg-blue-600 mt-4 text-white font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
+          <button
+            onClick={() => {
+              setIsVisible(true);
+            }}
+            className="bg-blue-500 hover:bg-blue-600 mt-4 text-white font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
+          >
             New Document
           </button>
+          <div
+            style={{
+              display: isVisible ? "flex" : "none",
+              backgroundColor: "white",
+              justifyContent:'center' ,
+              alignItems: "center",
+              position: "absolute",
+              left: "40%",
+              boxShadow: "0 0 1px 2px #DDDDDD",
+              paddingTop:20,
+              paddingBottom:40,
+              paddingLeft:20,
+              paddingRight:20,
+              borderRadius: 6,
+              flexDirection: "column",
+              gap: 20,
+            }}
+          >
+            <img
+            
+            src={Cross 
+            } alt="Close" style={{cursor:'pointer',alignSelf:'flex-end',height:15}} onClick={() => setIsVisible(false)} />
+            <p style={{fontWeight:500,fontSize:'20px'}}>Issue New Document</p>
+            <div
+            id="drag-drop-zone"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        style={{
+          border: '2px dashed #DDDDDD',
+          borderRadius: '10px',
+          padding: '20px',
+          textAlign: 'center',
+          width: 300,
+          justifyContent:'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <p>Drag & Drop your files here</p>
+        <p>or</p>
+        <div>
+  
+        <input style={{width:200,fontSize:12,marginTop:20}}    type="file" multiple onChange={handleFileSelect} />
+        </div>
+      </div>
+      {/* <ul>
+        {files.map((file, index) => (
+          <li key={index}>{file.name}</li>
+        ))}
+      </ul> */}
+            <input
+              type="text"
+              multiple
+              placeholder="Document Type"
+              value={DocumentTypeValue}
+              onChange={(e) => setDocumentType(e.target.value)}
+              style={{
+                boxShadow: "0 0 1px 1px #DDDDDD",
+                borderRadius: 6,
+                padding: 10,
+                outline: "none",
+                width: 300,
+              }}
+              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
+            />
+            <input
+              type="text"
+              multiple
+              placeholder="Document Title"
+              value={documentTitle}
+              onChange={(e) => setDocumentTitle(e.target.value)}
+              style={{
+                borderRadius: 6,
+                padding: 10,
+                boxShadow: "0 0 1px 1px #DDDDDD",
+                outline: "none",
+                width: 300,
+              }}
+              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
+            />
+            <input
+              type="text"
+              multiple
+              placeholder="Document Description"
+              value={documentDescription}
+              aria-multiline  
+              onChange={(e) => setDocumentDescription(e.target.value)}
+              style={{
+                borderRadius: 6,
+                padding: 10,
+                boxShadow: "0 0 1px 1px #DDDDDD",
+                outline: "none",
+                width: 300,
+              }}
+              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
+            />
+            <button
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                borderRadius: 6,
+                padding: 10,
+                width: 300,
+              }}
+              onClick={()=>handleUpload()}
+            >
+              Issue Document
+            </button>
+          </div>
         </div>
 
         {/* Suggested Documents */}
