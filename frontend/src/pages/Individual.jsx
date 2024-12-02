@@ -20,7 +20,8 @@ const Dashboard = () => {
   const [DocumentTypeValue, setDocumentType] = useState("");
   const [documentTitle, setDocumentTitle] = useState("");
   const [documentDescription, setDocumentDescription] = useState("");
-  console.log(files);
+  const [showIssuedDocs, setShowIssuedDocs] = useState(false); // New state to toggle Issued Documents visibility
+
   const handleDragOver = (event) => {
     event.preventDefault();
   };
@@ -34,11 +35,11 @@ const Dashboard = () => {
     const selectedFiles = Array.from(event.target.files);
     setFiles([...selectedFiles]);
   };
+
   const handleUpload = async () => {
     const formData = new FormData();
-
-    files.forEach((file, index) => {
-      formData.append(`file`, file);
+    files.forEach((file) => {
+      formData.append("file", file);
     });
     formData.append("title", documentTitle);
     formData.append("description", documentDescription);
@@ -53,7 +54,6 @@ const Dashboard = () => {
           },
         }
       );
-
       if (response.ok) {
         console.log("Files uploaded successfully");
       } else {
@@ -63,6 +63,7 @@ const Dashboard = () => {
       console.error("Error:", error);
     }
   };
+
   useEffect(() => {
     fetchDocuments();
   }, []);
@@ -88,21 +89,25 @@ const Dashboard = () => {
 
   const suggestedDocs = [
     {
-      title: "Driving License",
-      description: "Apply for or renew your driving license",
+      title: "Aadhar Card",
+      description: "Official government-issued identity card",
       icon: "https://via.placeholder.com/64x64",
     },
     {
-      title: "Vaccination Record",
-      description: "Access your vaccination certificates",
+      title: "Pan Card",
+      description: "Permanent Account Number issued by the government",
       icon: "https://via.placeholder.com/64x64",
     },
     {
-      title: "Property Documents",
-      description: "Manage your property records",
+      title: "Passport",
+      description: "International travel document",
       icon: "https://via.placeholder.com/64x64",
     },
   ];
+
+  const toggleIssuedDocs = () => {
+    setShowIssuedDocs((prev) => !prev);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -126,6 +131,7 @@ const Dashboard = () => {
             </a>
             <a
               href="#"
+              onClick={toggleIssuedDocs} // Toggle issued documents visibility
               className="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-50"
             >
               <FileText className="h-5 w-5" />
@@ -178,178 +184,32 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Recent Documents from API */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Your Documents
-            </h2>
-            <a
-              href="#"
-              className="text-blue-600 hover:text-blue-700 flex items-center"
-            >
-              View all <ChevronRight className="h-4 w-4 ml-1" />
-            </a>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {documents.map((doc) => (
-              <div
-                key={doc._id}
-                className="p-4 rounded-xl border border-gray-200 hover:border-blue-200 transition-colors"
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <FileText className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-medium text-gray-900">{doc.title}</h3>
-                    <p className="text-xs text-gray-500 mt-1 break-all">
-                      Hash: {doc.ipfsHash}
-                    </p>
-                    <a
-                      href={getIpfsLink(doc.ipfsHash)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-blue-600 hover:text-blue-700 flex items-center mt-2"
-                    >
-                      View on IPFS
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => {
-              setIsVisible(true);
-            }}
-            className="bg-blue-500 hover:bg-blue-600 mt-4 text-white font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
-          >
-            New Document
-          </button>
-          <div
-            style={{
-              display: isVisible ? "flex" : "none",
-              backgroundColor: "white",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              left: "40%",
-              boxShadow: "0 0 1px 2px #DDDDDD",
-              paddingTop: 20,
-              paddingBottom: 40,
-              paddingLeft: 20,
-              paddingRight: 20,
-              borderRadius: 6,
-              flexDirection: "column",
-              gap: 20,
-            }}
-          >
-            <img
-              src={Cross}
-              alt="Close"
-              style={{ cursor: "pointer", alignSelf: "flex-end", height: 15 }}
-              onClick={() => setIsVisible(false)}
-            />
-            <p style={{ fontWeight: 500, fontSize: "20px" }}>
-              Issue New Document
-            </p>
-            <div
-              id="drag-drop-zone"
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              style={{
-                border: "2px dashed #DDDDDD",
-                borderRadius: "10px",
-                padding: "20px",
-                textAlign: "center",
-                width: 300,
-                justifyContent: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p>Drag & Drop your files here</p>
-              <p>or</p>
-              <div>
-                <input
-                  style={{ width: 200, fontSize: 12, marginTop: 20 }}
-                  type="file"
-                  multiple
-                  onChange={handleFileSelect}
-                />
-              </div>
+        {/* Recently Issued Documents */}
+        {showIssuedDocs && (
+          <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Issued Documents
+              </h2>
             </div>
-            {/* <ul>
-        {files.map((file, index) => (
-          <li key={index}>{file.name}</li>
-        ))}
-      </ul> */}
-            <input
-              type="text"
-              multiple
-              placeholder="Document Type"
-              value={DocumentTypeValue}
-              onChange={(e) => setDocumentType(e.target.value)}
-              style={{
-                boxShadow: "0 0 1px 1px #DDDDDD",
-                borderRadius: 6,
-                padding: 10,
-                outline: "none",
-                width: 300,
-              }}
-              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
-              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
-            />
-            <input
-              type="text"
-              multiple
-              placeholder="Document Title"
-              value={documentTitle}
-              onChange={(e) => setDocumentTitle(e.target.value)}
-              style={{
-                borderRadius: 6,
-                padding: 10,
-                boxShadow: "0 0 1px 1px #DDDDDD",
-                outline: "none",
-                width: 300,
-              }}
-              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
-              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
-            />
-            <input
-              type="text"
-              multiple
-              placeholder="Document Description"
-              value={documentDescription}
-              aria-multiline
-              onChange={(e) => setDocumentDescription(e.target.value)}
-              style={{
-                borderRadius: 6,
-                padding: 10,
-                boxShadow: "0 0 1px 1px #DDDDDD",
-                outline: "none",
-                width: 300,
-              }}
-              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
-              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
-            />
-            <button
-              style={{
-                backgroundColor: "black",
-                color: "white",
-                borderRadius: 6,
-                padding: 10,
-                width: 300,
-              }}
-              onClick={() => handleUpload()}
-            >
-              Issue Document
-            </button>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {suggestedDocs.map((doc, index) => (
+                <div
+                  key={index}
+                  className="p-6 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors cursor-pointer"
+                >
+                  <img
+                    src={doc.icon}
+                    alt=""
+                    className="w-16 h-16 rounded-lg mb-4"
+                  />
+                  <h3 className="font-medium text-gray-900 mb-2">{doc.title}</h3>
+                  <p className="text-sm text-gray-600">{doc.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Suggested Documents */}
         <div className="bg-white rounded-2xl shadow-sm p-6">
