@@ -87,7 +87,56 @@ const Dashboard = () => {
   const getIpfsLink = (ipfsHash) => {
     return `https://ipfs.io/ipfs/${ipfsHash}`;
   };
+const dummyDataArray=[
+  {
+    logo:"https://upload.wikimedia.org/wikipedia/commons/1/13/Logo_of_Income_Tax_Department_India.png",
+    title:'Income Tax Department',
+    description:'Income Tax Department, Govt of India has provided PAN Verification Records to Indian citizens',
+    governmentType:'State Government',
+    documentType:'PAN Card',
+  },
+  {
+    logo:"https://cdn.iconscout.com/icon/free/png-512/free-aadhaar-logo-icon-download-in-svg-png-gif-file-formats--unique-identity-india-citizen-information-details-logos-icons-1747945.png?f=webp&w=512",
+    title:'Unique Identification Authority of India (UIDAI)',
+    description:'Aadhar Card is issued by UIDAI, Government of India',
+    governmentType:'Central Government',
+    documentType:'Aadhar Card',
+  
+  },
+  {
+    logo:"https://upload.wikimedia.org/wikipedia/en/1/1d/Kurukshetra_University_logo.png",
+    title:'Kurukshetra University, Kurukshetra',
+    description:'Kurukshetra University, Kurukshetra is issuing their Digital awards for the following years,through SmartDoc',
+    governmentType:'State Government',
+    documentType:'Degree Certificate',
 
+  },
+  {
+    logo:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXIHCJJ2QTxfumQq23zNyWNqWX4nbz4elmSw&s',
+    title:'Gurugram University, Gurugram',
+    description:'Gurugram University, Gurugram is issuing their Digital awards for the following years,through SmartDoc',
+    governmentType:'State Government',
+    documentType:'Degree Certificate',
+
+
+
+  },
+  {
+    logo:'https://upload.wikimedia.org/wikipedia/commons/3/36/Uppcl-logo.png',
+    title:'Uttar Pradesh Power Corporation Limited',
+    description:'Uttar Pradesh Power Corporation Limited is issuing their Digital awards for the following years,through SmartDoc',
+    governmentType:'State Government',
+    documentType:'Electricity Bill Electricity Connection',
+  },
+  {
+    logo:'https://we-recycle.org/wp-content/uploads/2014/03/bses-rajdhani.png',
+    title:'BSES YAMUNA/ RAJDHANI POWER LTD',
+    description:'BSES YAMUNA/ RAJDHANI POWER LTD is issuing their Digital awards for the following years,through SmartDoc',
+    governmentType:'State Government',
+    documentType:'Electricity Bill',
+  }
+
+]
   const suggestedDocs = [
     {
       title: "Aadhar Card",
@@ -110,6 +159,13 @@ const Dashboard = () => {
     setSelectedTab("documents");
     setShowIssuedDocs(true);
   };
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredData = dummyDataArray.filter((doc) =>
+    doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    doc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    doc.documentType.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -125,7 +181,8 @@ const Dashboard = () => {
 
           <nav className="space-y-2">
             <a
-            onClick={() => {setSelectedTab("home")
+            onClick={() => {
+              setSelectedTab("home")
               setShowIssuedDocs(false);
             }
 
@@ -194,7 +251,7 @@ const Dashboard = () => {
         </div>
 
         {/* Recently Issued Documents */}
-        {showIssuedDocs ? (
+        {selectedTab=="documents" && (
           <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-semibold text-gray-900">
@@ -219,9 +276,12 @@ const Dashboard = () => {
             </div>
           </div>
         )
+        }
 
-
-        :<div className="bg-white rounded-2xl shadow-sm p-6">
+       { 
+       selectedTab=="home" &&
+       
+       <div className="bg-white rounded-2xl shadow-sm p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold text-gray-900">
               Documents You Might Need
@@ -373,6 +433,54 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
+        }
+        {
+          selectedTab=="search" && (
+            <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
+      <div className="mb-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Search Documents
+              </h2>
+              <input
+                type="text"
+                value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for documents..."
+                className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+        
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {filteredData.length > 0 ? (
+          filteredData.map((doc, index) => (
+            <div
+              key={index}
+              className="p-6 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors cursor-pointer"
+            >
+              <div className="flex gap-5">
+                <img
+                  src={doc.logo}
+                  alt=""
+                  className="w-20 h-16 rounded-lg mb-4"
+                />
+                <h3 className="font-medium text-gray-900 mb-2">{doc.title}</h3>
+              </div>
+              <p className="text-xs text-gray-600">{doc.description}</p>
+              <div
+                style={{ width: "150px" }}
+                className="bg-blue-200 flex rounded-2xl p-2 justify-center mt-3"
+              >
+                <p style={{ fontSize: 12 }}>{doc.governmentType}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-600">No documents found.</p>
+        )}
+      </div>
+          </div>
+          )
         }
       </div>
     </div>
