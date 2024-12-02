@@ -1,10 +1,10 @@
 import express from "express";
 import connectDB from "./utils/connectDB.js";
-import documentRoutes from "./routes/documentRoutes.js";
-import issuerRoutes from "./routes/issuerRoutes.js";
-import documentRequest from "./routes/documentRequest.js";
 import "dotenv/config";
 import cors from "cors";
+import verifyRoute from "./routes/verify.js";
+import requestRoute from "./routes/request.js";
+import issueRoute from "./routes/issue.js";
 
 const app = express();
 
@@ -43,10 +43,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
-app.use("/api/documents", documentRoutes);
-app.use("/api/issuer", issuerRoutes);
-app.use("/api/documents", documentRequest)
+app.use("/api", requestRoute);
+app.use("/api", issueRoute);
+app.use("/api", verifyRoute);
 
 // Start Server
 const PORT = process.env.PORT || 3000;

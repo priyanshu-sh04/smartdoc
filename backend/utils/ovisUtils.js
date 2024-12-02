@@ -1,50 +1,46 @@
 import { Client } from "@gradio/client";
+import { fromPath } from "pdf2pic";
+import { promises as fs } from "fs"; 
 
-/**
- * Process a document using the Ovis API
- * @param {Buffer} fileBuffer - The document file buffer
- * @param {string} mimeType - The mime type of the file
- * @param {string} prompt - Custom prompt for the API (optional)
- * @returns {Promise<Object>} Parsed JSON response from Ovis
- */
-export const processDocumentWithOvis = async (
-  fileBuffer,
-  mimeType,
-  customPrompt = null
-) => {
+export const processDocumentWithOvis = async (fileBuffer, mimeType) => {
   try {
-    // Connect to the Ovis API
     const client = await Client.connect("AIDC-AI/Ovis1.6-Llama3.2-3B");
 
-    // Convert the buffer to a Blob
-    const imageBlob = new Blob([fileBuffer], { type: mimeType });
+    // Create temp directory if it doesn't exist
+    await fs.mkdir("./temp", { recursive: true });
 
-    // Default prompt for extracting personal details
-    const defaultPrompt =
-      "Give the personal details of the person who owns this document strictly in JSON Format, nothing else";
-    const prompt = customPrompt || defaultPrompt;
-    console.log(customPrompt, mimeType);
-    // Send the image and get response
-    const imageResponse = await client.predict("/ovis_chat", {
-      chatbot: [[prompt, null]],
-      image_input: imageBlob,
+    const tempPdfPath = "./temp/document.pdf";
+    await fs.writeFile(tempPdfPath, fileBuffer);
+
+    const options = {
+      density: 100,
+      saveFilename: "temp",
+      savePath: "./temp",
+      format: "png",
+    };
+
+    // Convert using Promise-based approach
+    const convert = fromPath(tempPdfPath, options);
+    const pageImage = await convert(1);
+
+    const imageBuffer = await fs.readFile(pageImage.path);
+    const imageFile = new File([imageBuffer], "image.png", {
+      type: "image/png",
     });
 
-    // Extract and parse the JSON response
-    const rawResponse = imageResponse.data[0][0][1];
+    const result = await client.predict("/ovis_chat", {
+      chatbot: [["Extract personal details in JSON format only, nothing else", null]],
+      image_input: imageFile,
+    });
 
-    // Extract JSON string from between code blocks if present
-    const jsonMatch =
-      rawResponse.match(/```json\n([\s\S]*?)\n```/) ||
-      rawResponse.match(/\{[\s\S]*\}/);
+    // Cleanup temp files
+    await fs.unlink(tempPdfPath);
+    await fs.unlink(pageImage.path);
 
-    if (!jsonMatch) {
-      throw new Error("No JSON found in response");
-    }
+    if (!result?.data?.[0]?.[0]?.[1]) throw new Error("Invalid API response");
 
-    // If we matched a code block, use group 1, otherwise use the full match
-    const jsonString = jsonMatch[1] || jsonMatch[0];
-    return JSON.parse(jsonString);
+    const jsonStr = result.data[0][0][1];
+    return JSON.parse(jsonStr.match(/\{[\s\S]*\}/)?.[0] || "{}");
   } catch (error) {
     throw new Error(`Document processing failed: ${error.message}`);
   }
