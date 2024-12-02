@@ -2,6 +2,7 @@ import { PinataSDK } from "pinata-web3";
 import Document from "../models/Document.js";
 import Certificate from "../models/Certificate.js";
 import { createWatermarkedFile } from "../utils/watermark.js";
+import { registerDocumentOnChain } from "../utils/blockchain.js";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT,
@@ -59,10 +60,17 @@ export const issueCertificate = async (req, res) => {
 
     const watermarkedHash = pinataResponse.IpfsHash;
 
+    const documentHash = ethers.id(document.ipfsHash);
+    const blockchainTxHash = await registerDocumentOnChain(
+      documentHash,
+      document.ipfsHash
+    );
+
     const certificate = new Certificate({
       documentId,
       issuerId,
       certificateHash: watermarkedHash,
+      blockchainTxHash,
       remarks,
       validityPeriod: validityPeriod ? new Date(validityPeriod) : null,
       issuedAt: new Date(),
@@ -70,9 +78,14 @@ export const issueCertificate = async (req, res) => {
 
     await certificate.save();
 
+    // Update document status
+    document.status = "ISSUED";
+    await document.save();
+
     res.status(201).json({
       message: "Certificate issued successfully.",
       certificate,
+      blockchainTxHash,
     });
   } catch (error) {
     console.error("Error issuing certificate:", error);

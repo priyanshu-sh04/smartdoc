@@ -1,17 +1,22 @@
 import mongoose from 'mongoose';
 
-const DocumentSchema = new mongoose.Schema({
+const documentSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: { type: String },
-  // Generate userId on login using uuid v4
-  userId: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'User' },
-  ipfsHash: { type: String, required: true },
-  fileSize: { type: Number },
-  originalName: { type: String },
-  mimeType: { type: String },
+  description: String,
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  status: {
+    type: String,
+    enum: ['PENDING', 'ISSUED', 'VERIFIED', 'REJECTED'],
+    default: 'PENDING'
+  },
+  ipfsHash: String,
+  fileSize: Number,
+  originalName: String,
+  mimeType: String,
   gatewayUrls: [String],
-  certificateId: { type: mongoose.Schema.Types.ObjectId, ref: 'Certificate' }, // Link to the certificate
+  extractedData: Object,
   createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('Document', DocumentSchema);
+export default mongoose.model('Document', documentSchema);

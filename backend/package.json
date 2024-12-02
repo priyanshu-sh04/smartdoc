@@ -33,6 +33,8 @@
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
-    "@gradio/client": "^1.8.0"
+    "@gradio/client": "^1.8.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.16"
   }
 }
