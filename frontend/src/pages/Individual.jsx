@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [documents, setDocuments] = useState([]);
   const [files, setFiles] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
+  const[selectedTab, setSelectedTab] = useState("home");
   const [DocumentTypeValue, setDocumentType] = useState("");
   const [documentTitle, setDocumentTitle] = useState("");
   const [documentDescription, setDocumentDescription] = useState("");
@@ -91,22 +92,23 @@ const Dashboard = () => {
     {
       title: "Aadhar Card",
       description: "Official government-issued identity card",
-      icon: "https://via.placeholder.com/64x64",
+      icon: "https://cdn.iconscout.com/icon/free/png-512/free-aadhaar-logo-icon-download-in-svg-png-gif-file-formats--unique-identity-india-citizen-information-details-logos-icons-1747945.png?f=webp&w=512",
     },
     {
       title: "Pan Card",
       description: "Permanent Account Number issued by the government",
-      icon: "https://via.placeholder.com/64x64",
+      icon: "https://vittmantri.com/Content/vittmantri.com/UploadedImage/RealImage/73418-182217_pan-card-pan-card-with-cartoon-hd-png.png",
     },
     {
       title: "Passport",
       description: "International travel document",
-      icon: "https://via.placeholder.com/64x64",
+      icon: "https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/blue_travelpictpassport_1484336852-1.png",
     },
   ];
 
   const toggleIssuedDocs = () => {
-    setShowIssuedDocs((prev) => !prev);
+    setSelectedTab("documents");
+    setShowIssuedDocs(true);
   };
 
   return (
@@ -123,8 +125,14 @@ const Dashboard = () => {
 
           <nav className="space-y-2">
             <a
+            onClick={() => {setSelectedTab("home")
+              setShowIssuedDocs(false);
+            }
+
+
+            }
               href="#"
-              className="flex items-center space-x-3 p-3 rounded-lg bg-blue-50 text-blue-600"
+              className={`flex items-center space-x-3 p-3 rounded-lg text-${selectedTab=="home"?"blue-600":"gray-600"} bg-${selectedTab=="home"?"blue-50":"white"}`}
             >
               <Home className="h-5 w-5" />
               <span className="font-medium">Home</span>
@@ -132,14 +140,15 @@ const Dashboard = () => {
             <a
               href="#"
               onClick={toggleIssuedDocs} // Toggle issued documents visibility
-              className="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-50"
+              className={`flex items-center space-x-3 p-3 rounded-lg text-${selectedTab=="documents"?"blue-600":"gray-600"} bg-${selectedTab=="documents"?"blue-50":"white"}  hover:bg-gray-50`}
             >
               <FileText className="h-5 w-5" />
               <span>Issued Documents</span>
             </a>
             <a
+            onClick={() => setSelectedTab("search")}
               href="#"
-              className="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-50"
+              className={`flex items-center space-x-3 p-3 rounded-lg text-${selectedTab=="search"?"blue-600":"gray-600"} bg-${selectedTab=="search"?"blue-50":"white"} hover:bg-gray-50`}
             >
               <Search className="h-5 w-5" />
               <span>Search Documents</span>
@@ -185,7 +194,7 @@ const Dashboard = () => {
         </div>
 
         {/* Recently Issued Documents */}
-        {showIssuedDocs && (
+        {showIssuedDocs ? (
           <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-semibold text-gray-900">
@@ -209,18 +218,144 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
-        )}
+        )
 
-        {/* Suggested Documents */}
-        <div className="bg-white rounded-2xl shadow-sm p-6">
+
+        :<div className="bg-white rounded-2xl shadow-sm p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold text-gray-900">
               Documents You Might Need
             </h2>
-            <button className="flex items-center text-blue-600 hover:text-blue-700">
+            <button         onClick={() => {
+              setIsVisible(true);
+            }} className="flex items-center text-blue-600 hover:text-blue-700">
               <Plus className="h-4 w-4 mr-1" /> Add New
             </button>
           </div>
+          <div
+            style={{
+              display: isVisible ? "flex" : "none",
+              backgroundColor: "white",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              left: "40%",
+              boxShadow: "0 0 1px 2px #DDDDDD",
+              paddingTop: 20,
+              paddingBottom: 40,
+              paddingLeft: 20,
+              paddingRight: 20,
+              borderRadius: 6,
+              flexDirection: "column",
+              gap: 20,
+            }}
+          >
+            <img
+              src={Cross}
+              alt="Close"
+              style={{ cursor: "pointer", alignSelf: "flex-end", height: 15 }}
+              onClick={() => setIsVisible(false)}
+            />
+            <p style={{ fontWeight: 500, fontSize: "20px" }}>
+              Issue New Document
+            </p>
+            <div
+              id="drag-drop-zone"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              style={{
+                border: "2px dashed #DDDDDD",
+                borderRadius: "10px",
+                padding: "20px",
+                textAlign: "center",
+                width: 300,
+                justifyContent: "center",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <p>Drag & Drop your files here</p>
+              <p>or</p>
+              <div>
+                <input
+                  style={{ width: 200, fontSize: 12, marginTop: 20 }}
+                  type="file"
+                  multiple
+                  onChange={handleFileSelect}
+                />
+              </div>
+        
+            </div>
+            {/* <ul>
+        {files.map((file, index) => (
+          <li key={index}>{file.name}</li>
+        ))}
+      </ul> */}
+            <input
+              type="text"
+              multiple
+              placeholder="Document Type"
+              value={DocumentTypeValue}
+              onChange={(e) => setDocumentType(e.target.value)}
+              style={{
+                boxShadow: "0 0 1px 1px #DDDDDD",
+                borderRadius: 6,
+                padding: 10,
+                outline: "none",
+                width: 300,
+              }}
+              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
+            />
+            <input
+              type="text"
+              multiple
+              placeholder="Document Title"
+              value={documentTitle}
+              onChange={(e) => setDocumentTitle(e.target.value)}
+              style={{
+                borderRadius: 6,
+                padding: 10,
+                boxShadow: "0 0 1px 1px #DDDDDD",
+                outline: "none",
+                width: 300,
+              }}
+              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
+            />
+            <input
+              type="text"
+              multiple
+              placeholder="Document Description"
+              value={documentDescription}
+              aria-multiline
+              onChange={(e) => setDocumentDescription(e.target.value)}
+              style={{
+                borderRadius: 6,
+                padding: 10,
+                boxShadow: "0 0 1px 1px #DDDDDD",
+                outline: "none",
+                width: 300,
+              }}
+              onBlur={(e) => (e.target.style.boxShadow = "0 0 1px 2px #DDDDDD")}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 1px 2px black")}
+            />
+            <button
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                borderRadius: 6,
+                padding: 10,
+                width: 300,
+              }}
+              onClick={() => handleUpload()}
+            >
+              Issue Document
+            </button>
+          </div>
+        
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {suggestedDocs.map((doc, index) => (
               <div
@@ -238,6 +373,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
+        }
       </div>
     </div>
   );
