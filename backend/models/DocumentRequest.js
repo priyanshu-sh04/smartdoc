@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const DocumentRequestSchema = new mongoose.Schema({
   userName: String,
   userEmail: String,
@@ -15,3 +17,5 @@ const DocumentRequestSchema = new mongoose.Schema({
   },
   rejectionReason: String,
 });
+
+export default mongoose.model('DocumentRequest', DocumentRequestSchema);
