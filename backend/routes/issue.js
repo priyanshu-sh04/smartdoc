@@ -38,7 +38,7 @@ router.post("/issue-document", async (req, res) => {
 
     // Fetch user details from MongoDB
     const user = await User.findOne({
-    //   name: request.name,  phone: request.phone,
+      name: request.name,  phone: request.phone,
       aadhaar: request.aadhaar,
     });
 
