@@ -1,29 +1,21 @@
 import { Client } from "@gradio/client";
 import { fromPath } from "pdf2pic";
-import { promises as fs } from "fs"; 
+import { promises as fs } from "fs";
 
-export const processDocumentWithOvis = async (fileBuffer, mimeType) => {
+export const processDocumentWithOvis = async (imageBuffer) => {
   try {
     const client = await Client.connect("AIDC-AI/Ovis1.6-Llama3.2-3B");
 
     // Create temp directory if it doesn't exist
     await fs.mkdir("./temp", { recursive: true });
 
-    const tempPdfPath = "./temp/document.pdf";
-    await fs.writeFile(tempPdfPath, fileBuffer);
+    // Create a temporary file path
+    const tempImagePath = "./temp/document.png";
+    
+    // Write the image buffer to a temporary file
+    await fs.writeFile(tempImagePath, imageBuffer);
 
-    const options = {
-      density: 100,
-      saveFilename: "temp",
-      savePath: "./temp",
-      format: "png",
-    };
-
-    // Convert using Promise-based approach
-    const convert = fromPath(tempPdfPath, options);
-    const pageImage = await convert(1);
-
-    const imageBuffer = await fs.readFile(pageImage.path);
+    // Create a File object from the buffer
     const imageFile = new File([imageBuffer], "image.png", {
       type: "image/png",
     });
@@ -33,15 +25,15 @@ export const processDocumentWithOvis = async (fileBuffer, mimeType) => {
       image_input: imageFile,
     });
 
-    // Cleanup temp files
-    await fs.unlink(tempPdfPath);
-    await fs.unlink(pageImage.path);
+    // Cleanup temp file
+    await fs.unlink(tempImagePath);
 
     if (!result?.data?.[0]?.[0]?.[1]) throw new Error("Invalid API response");
 
     const jsonStr = result.data[0][0][1];
     return JSON.parse(jsonStr.match(/\{[\s\S]*\}/)?.[0] || "{}");
   } catch (error) {
+    console.error("Ovis processing error:", error);
     throw new Error(`Document processing failed: ${error.message}`);
   }
 };
