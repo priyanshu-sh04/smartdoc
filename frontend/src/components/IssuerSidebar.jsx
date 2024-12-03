@@ -5,7 +5,6 @@ const sidebarItems = [
   { icon: Home, label: 'Dashboard', href: '/' },
   { icon: ClipboardList, label: 'Document Templates', href: '/templates' },
   { icon: Plus, label: 'Bulk Document Issuance', href: '/bulk-issuance' },
-  { icon: FileClock, label: 'Document Requests', href: '/requests' },
   { icon: PieChart, label: 'Analytics and Reports', href: '/analytics' },
   { icon: Settings, label: 'Settings', href: '/settings' },
 ];
