@@ -1,12 +1,11 @@
 import express from "express";
-import mongoose from "mongoose";
-import Request from "../models/Request.js"; // Create this model to track requests
+import Request from "../models/Request.js"; 
 
 const router = express.Router();
 
 router.post("/request-document", async (req, res) => {
   try {
-    const { name, phone, aadhaar, documentType } = req.body;
+    const { name, phone, aadhaar, documentType, issuingAuthority } = req.body;
 
     // Validate input
     if (!name || !phone || !aadhaar || !documentType) {
@@ -19,6 +18,7 @@ router.post("/request-document", async (req, res) => {
       phone,
       aadhaar,
       documentType,
+      issuingAuthority,
       status: "Pending",
       createdAt: new Date(),
     });

@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import {PDFDocument} from 'pdf-lib';
 import Request from "../models/Request.js";
 import User from "../models/User.js";
@@ -35,7 +34,7 @@ router.post("/issue-document", async (req, res) => {
     if (!request) {
       return res.status(404).json({ error: "Request not found." });
     }
-
+    const issuingAuthority = request.issuingAuthority;
     // Fetch user details from MongoDB
     const user = await User.findOne({
       name: request.name,  phone: request.phone,
@@ -70,7 +69,8 @@ router.post("/issue-document", async (req, res) => {
     const watermarkedPdf = await createWatermarkedFile(
       Buffer.from(pdfBytes),
       user.name,
-      "Issued by BSES"
+      "Issued by BSES",
+      issuingAuthority
     );
 
     // Upload PDF to IPFS

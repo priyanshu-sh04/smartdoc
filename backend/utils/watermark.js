@@ -3,7 +3,8 @@ import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 export const createWatermarkedFile = async (
   pdfBuffer,
   watermarkText,
-  remarks
+  remarks,
+  issuingAuthority
 ) => {
   try {
     if (!isPDF(pdfBuffer)) {
@@ -31,9 +32,8 @@ export const createWatermarkedFile = async (
       // Detailed information watermark
       const detailedText = `
         Certified Document
-        Issuer: ${watermarkText}
+        Issuer: ${issuingAuthority}
         Date of Certification: ${new Date().toLocaleDateString()}
-        Verification Mark: ${generateVerificationCode()}
         ${remarks ? `Remarks: ${remarks}` : ""}
         `;
 
