@@ -74,7 +74,7 @@ const Dashboard = () => {
                 key={index}
                 className="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors"
                 onClick={() =>
-                  action === "Request Document" && startDocumentRequest()
+                  action === "Request Document" 
                 }
               >
                 <Plus className="h-8 w-8 text-indigo-600 mb-2" />
