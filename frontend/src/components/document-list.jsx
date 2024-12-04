@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -8,15 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { 
-  FileText, 
-  MoreHorizontal, 
-  Download, 
-  Share2, 
+import {
+  FileText,
+  MoreHorizontal,
+  Download,
+  Share2,
   Eye,
   CheckCircle2,
-  Shield
-} from 'lucide-react';
+  Shield,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,29 +42,34 @@ export function DocumentList({ documents }) {
         </TableHeader>
         <TableBody>
           {documents.map((doc) => (
-            <TableRow 
+            <TableRow
               key={doc.id}
               className="hover:bg-gray-50 transition-colors"
             >
               <TableCell>
-                <div className="flex items-center gap-2">
+                <div
+                  onClick={() => window.open(doc.documentLink)}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
                   <div className="bg-indigo-50 p-2 rounded-lg">
                     <FileText className="h-4 w-4 text-indigo-600" />
                   </div>
                   <span className="font-medium text-gray-900">{doc.type}</span>
                 </div>
               </TableCell>
-              
+
               <TableCell>
                 <div className="flex flex-col">
-                  <span className="font-medium text-gray-900">{doc.recipient}</span>
+                  <span className="font-medium text-gray-900">
+                    {doc.recipient}
+                  </span>
                 </div>
               </TableCell>
-              
+
               <TableCell>
                 <span className="text-gray-600">{doc.issuedOn}</span>
               </TableCell>
-              
+
               <TableCell>
                 <Badge
                   variant={
@@ -79,29 +84,29 @@ export function DocumentList({ documents }) {
                   {doc.status}
                 </Badge>
               </TableCell>
-              
+
               <TableCell>
                 <div className="flex items-center gap-3">
                   {doc.digitalCertificate === "issued" && (
                     <div className="flex items-center gap-1 text-green-600">
                       <CheckCircle2 className="h-4 w-4" />
-                      <span className="text-sm">Digital</span>
+                      <span className="text-sm">AI</span>
                     </div>
                   )}
                   {doc.verified === "true" && (
                     <div className="flex items-center gap-1 text-blue-600">
                       <Shield className="h-4 w-4" />
-                      <span className="text-sm">Verified</span>
+                      <span className="text-sm">Digitally Certified</span>
                     </div>
                   )}
                 </div>
               </TableCell>
-              
+
               <TableCell className="text-right">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       className="h-8 w-8 p-0 hover:bg-gray-100"
                     >
                       <MoreHorizontal className="h-4 w-4" />

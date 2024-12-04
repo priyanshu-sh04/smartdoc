@@ -185,7 +185,7 @@ const DashboardPage = () => (
       </CardHeader>
       <CardContent>
         <div className="rounded-md flex flex-row gap-2">
-          No pending Verifications, auto verify is On <CheckCircle className="text-green-700"/>
+          No pending Verifications, auto verify is ON <CheckCircle className="text-green-700"/>
         </div>
       </CardContent>
     </Card>
@@ -420,10 +420,14 @@ const VerificationPage = () => {
       {/* Sidebar */}
       <aside className="hidden w-64 bg-indigo-700 text-white lg:block">
         <div className="flex h-full flex-col">
-          <div className="flex items-center justify-center space-x-2 py-6">
-            <Shield className="h-8 w-8" />
-            <span className="text-2xl font-bold">SmartDoc</span>
-          </div>
+        <div className="flex items-center justify-center space-x-3">
+              <div className="h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg my-5">
+              <img src="/icon.png" className="w-10 h-10 rounded-md"/>
+              </div>
+              <span className="text-2xl font-bold tracking-tight">
+                SmartDoc
+              </span>
+            </div>
           <ScrollArea className="flex-1 px-3">
             <nav className="space-y-2">
               {[

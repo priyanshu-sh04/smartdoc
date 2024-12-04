@@ -1,6 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Shield, FileText, RefreshCw, Brain, Database, User, Building, CheckCircle, ArrowRight } from 'lucide-react';
+import {
+  Shield,
+  FileText,
+  RefreshCw,
+  Brain,
+  Database,
+  User,
+  Building,
+  CheckCircle,
+  ArrowRight,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => (
@@ -76,7 +86,7 @@ const HeroSection = () => (
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Start Verifying
+                Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </motion.button>
             </Link>
@@ -99,7 +109,7 @@ const HeroSection = () => (
             <div className="absolute -top-6 -left-6 w-72 h-72 bg-blue-200 rounded-full filter blur-3xl opacity-30"></div>
             <div className="absolute -bottom-6 -right-6 w-72 h-72 bg-indigo-200 rounded-full filter blur-3xl opacity-30"></div>
             <img
-              src="/placeholder.svg?height=400&width=600"
+              src="/banner.jpg"
               alt="Document Security"
               className="relative rounded-2xl shadow-2xl transform hover:scale-105 transition duration-500"
             />
@@ -204,11 +214,11 @@ const UserTypeCard = ({ icon: Icon, title, description, image }) => (
     >
       <Icon className="h-10 w-10 text-blue-600" />
     </motion.div>
-    <img
+    {/* <img
       src={image}
       alt={title}
       className="w-full h-40 object-cover rounded-xl mb-6"
-    />
+    /> */}
     <h3 className="text-2xl font-semibold text-gray-900 mb-4">{title}</h3>
     <p className="text-gray-600 leading-relaxed">{description}</p>
   </motion.div>
@@ -264,11 +274,23 @@ const DocumentTypesSection = () => (
         </p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {["Passports", "Driver's Licenses", "National ID Cards", "Birth Certificates", "Marriage Certificates", "Academic Transcripts", "Medical Records", "Property Deeds"].map((doc, index) => (
+        {[
+          "Passports",
+          "Driver's Licenses",
+          "National ID Cards",
+          "Birth Certificates",
+          "Marriage Certificates",
+          "Academic Transcripts",
+          "Medical Records",
+          "Property Deeds",
+        ].map((doc, index) => (
           <motion.div
             key={index}
             className="bg-white p-4 rounded-lg shadow-md text-center"
-            whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.3)" }}
+            whileHover={{
+              y: -5,
+              boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.3)",
+            }}
           >
             <FileText className="h-8 w-8 text-blue-600 mx-auto mb-2" />
             <p className="text-gray-800">{doc}</p>
@@ -284,8 +306,13 @@ const CallToAction = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col lg:flex-row items-center justify-between">
         <div className="text-white mb-8 lg:mb-0">
-          <h2 className="text-3xl font-bold mb-4">Ready to Secure Your Documents?</h2>
-          <p className="text-xl">Join thousands of users who trust SmartDoc for their document security needs.</p>
+          <h2 className="text-3xl font-bold mb-4">
+            Ready to Secure Your Documents?
+          </h2>
+          <p className="text-xl">
+            Join thousands of users who trust SmartDoc for their document
+            security needs.
+          </p>
         </div>
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Link to="/signup">
@@ -312,4 +339,3 @@ const HomePage = () => (
 );
 
 export default HomePage;
-

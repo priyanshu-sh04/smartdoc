@@ -1025,7 +1025,7 @@ const Dashboard = () => {
           <div className="px-6 mb-10">
             <div className="flex items-center justify-center space-x-3">
               <div className="h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                <FileText className="h-7 w-7" />
+              <img src="/icon.png" className="w-10 h-10 rounded-md"/>
               </div>
               <span className="text-2xl font-bold tracking-tight">
                 SmartDoc

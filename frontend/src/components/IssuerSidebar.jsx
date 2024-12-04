@@ -62,11 +62,13 @@ const Sidebar = ({
     >
       <div className="flex items-center justify-between p-4 border-b border-indigo-500">
         <div className={`flex items-center space-x-2 ${isCollapsed ? "justify-center" : ""}`}>
-          <div className="p-1.5 bg-white/10 rounded-lg">
-            <ShieldCheck className="h-6 w-6 text-white" />
-          </div>
+        <div className="flex items-center justify-center space-x-3">
+              <div className="h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+              <img src="/icon.png" className="w-10 h-10 rounded-md"/>
+              </div>
+            </div>
           {!isCollapsed && (
-            <span className="text-lg font-semibold text-white">SmartDoc</span>
+            <span className="text-white font-bold text-xl">SmartDoc</span>
           )}
         </div>
         <button

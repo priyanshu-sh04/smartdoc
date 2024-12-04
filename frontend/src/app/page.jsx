@@ -36,19 +36,19 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-3">
         <MetricsCard
           title="Total Issued"
-          value="5,123"
+          value="1"
           icon={<Files />}
-          trend={{ value: 12, isPositive: true }} />
+          trend={{ value: 0, isPositive: true }} />
         <MetricsCard
           title="Pending Approvals"
-          value="128"
+          value="0"
           icon={<FileText />}
-          trend={{ value: 8, isPositive: false }} />
+          trend={{ value: 0, isPositive: true }} />
         <MetricsCard
           title="Templates Created"
-          value="47"
+          value="1"
           icon={<Users />}
-          trend={{ value: 4, isPositive: true }} />
+          trend={{ value: 1, isPositive: true }} />
       </div>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
