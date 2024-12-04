@@ -6,30 +6,22 @@ import { Bell, FileText, Files, Users } from 'lucide-react'
 
 const recentDocuments = [{
   id: "1",
-  type: "Employee ID",
-  recipient: "Alex Johnson",
-  issuedOn: "Nov 12, 2024",
+  type: "Student ID",
+  recipient: "Sapana Pokharal",
+  issuedOn: "December 5, 2024",
   status: "approved",
-}, {
-  id: "2",
-  type: "Academic Certificate",
-  recipient: "Sophia Kim",
-  issuedOn: "Nov 10, 2024",
-  status: "pending",
-}, {
-  id: "3",
-  type: "Tax Clearance",
-  recipient: "John Doe",
-  issuedOn: "Nov 8, 2024",
-  status: "rejected",
-}]
+  digitalCertificate: "issued",
+  verified: "true",
+  documentLink: "https://ipfs.io/ipfs/QmYAHYrQaxYMZNQ4DsWBWHoPAQD8tL7SaTvu7BhSBbMUog"
+}
+]
 
 export default function DashboardPage() {
   return (
     (<div className="flex-1 space-y-6 p-8 pt-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Document Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Welcome, Dronacharya College of Engineering</h1>
           <p className="text-muted-foreground">
             Issue, manage, and track documents effortlessly
           </p>

@@ -1,62 +1,69 @@
-import React from "react";
-import {
-  FileText,
-  Home,
-  Plus,
-  Settings,
-  BarChart2,
-  ChevronRight,
-  ClipboardList,
-  ShieldCheck,
-  FileClock,
-  PieChart,
-} from "lucide-react";
-import DashboardPage from "@/app/page";
+import React, { useState } from "react";
 import Sidebar from "@/components/IssuerSidebar";
+import DashboardPage from "@/app/page";
+import { DocumentTemplates, BulkDocumentIssuance, Analytics, Settings } from "@/components/IssuerPageComponents";
 
 const IssuerDashboard = () => {
-  const documentTemplates = [
-    { title: "Identity Card", description: "Preformatted template for IDs" },
-    {
-      title: "Certificate of Employment",
-      description: "Issue employment certificates",
-    },
-    {
-      title: "Academic Certificate",
-      description: "Educational institution template",
-    },
-    { title: "Tax Document", description: "Tax-related forms and records" },
-  ];
+  const [showDashboard, setShowDashboard] = useState(true);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [showBulkIssuance, setShowBulkIssuance] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
-  const recentIssues = [
-    {
-      title: "Employee ID",
-      recipient: "Alex Johnson",
-      docId: "EMP-2024-101",
-      date: "Nov 12, 2024",
-    },
-    {
-      title: "Academic Certificate",
-      recipient: "Sophia Kim",
-      docId: "EDU-2024-202",
-      date: "Nov 10, 2024",
-    },
-    {
-      title: "Tax Clearance",
-      recipient: "John Doe",
-      docId: "TAX-2024-303",
-      date: "Nov 8, 2024",
-    },
-  ];
+  // Function to reset all states
+  const resetStates = () => {
+    setShowDashboard(false);
+    setShowTemplates(false);
+    setShowBulkIssuance(false);
+    setShowAnalytics(false);
+    setShowSettings(false);
+  };
+
+  // Modified Sidebar component with state handlers
+  const ModifiedSidebar = () => {
+    const handleNavigation = (route) => {
+      resetStates();
+      switch(route) {
+        case '/':
+          setShowDashboard(true);
+          break;
+        case '/templates':
+          setShowTemplates(true);
+          break;
+        case '/bulk-issuance':
+          setShowBulkIssuance(true);
+          break;
+        case '/analytics':
+          setShowAnalytics(true);
+          break;
+        case '/settings':
+          setShowSettings(true);
+          break;
+        default:
+          setShowDashboard(true);
+      }
+    };
+
+    return (
+      <Sidebar 
+        onHomeClick={() => handleNavigation('/')}
+        onTemplatesClick={() => handleNavigation('/templates')}
+        onBulkIssuanceClick={() => handleNavigation('/bulk-issuance')}
+        onAnalyticsClick={() => handleNavigation('/analytics')}
+        onSettingsClick={() => handleNavigation('/settings')}
+      />
+    );
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar - fixed width and full height */}
-      <Sidebar />
-
-      {/* Main Content - with proper margin and padding */}
+      <ModifiedSidebar />
       <div className="flex-1 ml-72">
-        <DashboardPage />
+        {showDashboard && <DashboardPage />}
+        {showTemplates && <DocumentTemplates />}
+        {showBulkIssuance && <BulkDocumentIssuance />}
+        {showAnalytics && <Analytics />}
+        {showSettings && <Settings />}
       </div>
     </div>
   );
