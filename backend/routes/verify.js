@@ -1,10 +1,9 @@
 import { Router } from "express";
-import { verifyDocument } from "../controllers/verifyController.js";  // Create the controller for the logic
-// import multer from "multer";
-// import { uploadDocument } from "../controllers/uploadController.js";  // Reuse file upload logic from Step 2
+import { verifyDocument } from "../controllers/verifyController.js"; // Create the controller for the logic
+
 
 const router = Router();
 
-router.post("/verify-document", verifyDocument);
+router.post("/verifydoc", verifyDocument);
 
 export default router;

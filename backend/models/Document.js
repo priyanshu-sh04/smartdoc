@@ -1,22 +1,22 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const documentSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: String,
+  documentType: String,
   userId: { type: mongoose.Schema.Types.ObjectId, required: true },
   status: {
     type: String,
-    enum: ['PENDING', 'ISSUED', 'VERIFIED', 'REJECTED'],
-    default: 'PENDING'
+    enum: ["PENDING", "ISSUED", "VERIFIED", "REJECTED"],
+    default: "PENDING",
   },
+  verifierId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  issuerId: { type: mongoose.Schema.Types.ObjectId, required: true },
   ipfsHash: String,
   fileSize: Number,
-  originalName: String,
   mimeType: String,
   gatewayUrls: [String],
-  extractedData: Object,
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model('Document', documentSchema);
+export default mongoose.model("Document", documentSchema);

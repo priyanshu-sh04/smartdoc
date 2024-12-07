@@ -1,5 +1,4 @@
 import { Client } from "@gradio/client";
-import { fromPath } from "pdf2pic";
 import { promises as fs } from "fs";
 
 export const processDocumentWithOvis = async (imageBuffer) => {
