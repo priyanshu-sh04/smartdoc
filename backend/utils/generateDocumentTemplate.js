@@ -8,7 +8,7 @@ export async function generateDocumentTemplate(documentType, userData) {
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   
     switch(documentType) {
-      case 'ID_CARD':
+      case 'ID Card':
         // ID Card Template
         page.drawRectangle({
           x: 50, y: 50,

@@ -1,9 +1,8 @@
-import express from "express";
-import {PDFDocument} from 'pdf-lib';
 import Request from "../models/Request.js";
 import User from "../models/verifierDB.js";
 import { createWatermarkedFile } from "../utils/watermark.js";
 import { uploadToIPFS } from "../utils/ipfsUtils.js";
+import {generateDocumentTemplate} from "../utils/generateDocumentTemplate.js"
 import { ethers } from "ethers";
 import DocumentRegistryABI from "../artifacts/contracts/DocumentRegistry.sol/DocumentRegistry.json" with { type: "json" };
 import 'dotenv/config';
@@ -46,7 +45,7 @@ export const issueDocument = async (req, res) => {
       }
   
       // Prepare userData based on document type
-      const userData = documentType === 'ID_CARD' 
+      const userData = documentType === 'ID Card' 
         ? {
             name: user.name,
             aadhaar: user.aadhaar,
@@ -128,4 +127,14 @@ export const issueDocument = async (req, res) => {
       details: error.message 
     });
   }
+}
+
+export const getRequestedDocs = async (req,res) => {
+  try {
+    const requestedDocs = await Request.find();
+    res.json(requestedDocs);
+  }
+catch(error){
+  console.error("Cannot fetch requests:", error);
+}
 }

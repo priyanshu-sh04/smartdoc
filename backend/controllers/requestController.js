@@ -2,7 +2,7 @@ import Request from "../models/Request.js";
 
 export const requestDoc = async (req, res) => {
   try {
-    const { name, phone, aadhaar, documentType, issuingAuthority } = req.body;
+    const { name, phone, dob, UID, aadhaar, documentType, issuingAuthority } = req.body;
 
     // Validate input
     if (!name || !phone || !aadhaar || !documentType) {
@@ -13,6 +13,8 @@ export const requestDoc = async (req, res) => {
     const newRequest = new Request({
       name,
       phone,
+      dob,
+      UID,
       aadhaar,
       documentType,
       issuingAuthority,

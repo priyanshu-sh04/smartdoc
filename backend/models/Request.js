@@ -4,13 +4,17 @@ const requestSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   aadhaar: { type: String, required: true },
-  issuingAuthority: { type: mongoose.Schema.Types.ObjectId, required: true },
+  dob: { type: Date },
+  UID: { type: String, required: true },
+  issuingAuthority: { type: String, required: true },
   status: { type: String, default: "Pending" },
   createdAt: { type: Date, default: Date.now },
-  documentType: { 
-    type: String, 
-    enum: ['ID_CARD', 'EXPERIENCE_CERTIFICATE'],
-    required: true 
+  ipfsHash: { type: String },
+  documentHash: { type: String },
+  documentType: {
+    type: String,
+    enum: ["ID Card", "Experience Certificate"],
+    required: true,
   },
   // these fields will only be filled if experience certificate is selected
   companyName: String,
