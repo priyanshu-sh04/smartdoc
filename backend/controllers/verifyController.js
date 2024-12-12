@@ -141,7 +141,7 @@ export const verifyDocument = async (req, res) => {
       });
     }
 
-    // Rest of the verification process remains the same...
+    // Rest of the verification process
     const documentDetails = await processDocumentWithOvis(imageBuffer, prompt);
     console.log(documentDetails);
 
@@ -150,6 +150,7 @@ export const verifyDocument = async (req, res) => {
       $or: [{ name: documentDetails.name }, { phone: documentDetails.phone }],
     });
 
+// if the document details dont match, notification will be sent to the user with the details
     if (!verifierRecord) {
       return res.status(400).json({
         error: "Document details do not match official records",

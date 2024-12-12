@@ -17,4 +17,14 @@ contract DocumentRegistry {
     function verifyDocument(bytes32 documentHash) public view returns (bool) {
         return documents[documentHash];
     }
+
+      function unregisterDocument(bytes32 documentHash) public {
+        require(documents[documentHash], "Document not registered");
+        
+        delete documents[documentHash];
+        delete ipfsHashes[documentHash];
+        
+        emit DocumentUnregistered(documentHash);
+    }
+}
 }

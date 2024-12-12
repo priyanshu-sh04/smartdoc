@@ -5,7 +5,6 @@ import cors from "cors";
 import verifyRoute from "./routes/verify.js";
 import requestRoute from "./routes/request.js";
 import issueRoute from "./routes/issue.js";
-import verifyImgRoute from "./routes/verifyImg.js";
 
 const app = express();
 
@@ -47,7 +46,6 @@ app.use((req, res, next) => {
 app.use("/api", requestRoute);
 app.use("/api", issueRoute);
 app.use("/api", verifyRoute);
-app.use("/api", verifyImgRoute);
 
 // Start Server
 const PORT = process.env.PORT;
