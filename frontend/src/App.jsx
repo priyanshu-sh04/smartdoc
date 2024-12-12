@@ -87,17 +87,17 @@ const HeroSection = () => (
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Get Started
+               Login
                 <ArrowRight className="ml-2 h-5 w-5" />
               </motion.button>
-            </Link>
+            </Link><Link to="/signup">
             <motion.button
               className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-50 transition duration-300 text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Learn More
-            </motion.button>
+              Sign Up
+            </motion.button></Link>
           </div>
         </motion.div>
         <motion.div

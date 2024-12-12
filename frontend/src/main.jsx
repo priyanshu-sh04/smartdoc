@@ -15,7 +15,7 @@ import MyDocuments from "./pages/MyDocs";
 import Profile from "./pages/Profile";
 import Analytics from "./pages/Analytics";
 import DocumentRequests from "./pages/DocumentRequests";
-import Register from "./pages/Register";
+import SignUp from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -72,7 +72,7 @@ const router = createBrowserRouter([
     },
     {
       path: "/signup",
-      element: <Register />,
+      element: <SignUp />,
       },
 ]);
 

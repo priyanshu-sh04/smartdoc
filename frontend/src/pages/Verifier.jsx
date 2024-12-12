@@ -167,10 +167,10 @@ const DashboardPage = ({ verificationData, onVerify }) => {
                   <span>Verified</span>
                 </div>
                 <span className="font-bold">
-                  {verifiedPercentage.toFixed(1)}%
+                  {(totalDocs/totalDocs)*100}%
                 </span>
               </div>
-              <Progress value={verifiedPercentage} className="h-2" />
+              <Progress value={(totalDocs/totalDocs)*100} className="h-2" />
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-yellow-500" />

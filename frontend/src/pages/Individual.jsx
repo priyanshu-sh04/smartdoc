@@ -18,12 +18,15 @@ const Dashboard = () => {
     const fetchDocuments = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/getVerificationReq`, {
-          headers: {
-            // Add any necessary authentication headers
-            // 'Authorization': `Bearer ${yourAuthToken}`
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/getVerificationReq`,
+          {
+            headers: {
+              // Add any necessary authentication headers
+              // 'Authorization': `Bearer ${yourAuthToken}`
+            },
           }
-        });
+        );
 
         // Assuming the response structure matches the previous example
         setDocuments(response.data.requests || []);
@@ -63,9 +66,9 @@ const Dashboard = () => {
         {selectedTab === "home" && (
           <>
             <QuickActions />
-            <br/>
-            <AvailableDocuments/>
-            <br/>
+            <br />
+            <AvailableDocuments />
+            <br />
             {isLoading ? (
               <LoadingSpinner />
             ) : error ? (
@@ -74,6 +77,9 @@ const Dashboard = () => {
               <RecentDocuments documents={documents} />
             )}
           </>
+        )}
+        {selectedTab === "documents" && (
+          <RecentDocuments documents={documents} />
         )}
         {selectedTab === "search" && <SearchDocuments />}
         {selectedTab === "settings" && <Settings />}
