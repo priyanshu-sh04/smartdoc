@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  Shield,
   FileText,
   RefreshCw,
   Brain,
@@ -23,7 +22,11 @@ export const Navbar = () => (
             className="h-max w-10 border-r-2 mr-2 pr-2 border-black"
             alt="National Emblem"
           />
-          <Shield className="h-10 w-10 text-blue-600" />
+             <img
+              src="/icon.png"
+              className="h-max w-14  mr-2 pr-2"
+              alt="Smartdoc logo"
+            />
           <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">
             SmartDoc
           </span>
@@ -69,15 +72,13 @@ const HeroSection = () => (
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight">
-            Transform Document{" "}
-            <span className="text-blue-600">Verification</span> &{" "}
-            <span className="text-blue-600">Security</span>
+          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight">
+            Securely access and verify documents <br/>
+            <span className="text-blue-600">Anytime</span><span className="text-blue-600">,</span> {" "}
+            <span className="text-blue-600">Anywhere</span>
           </h1>
           <p className="text-xl text-gray-600 mb-10">
-            Experience the future of document management with our
-            blockchain-powered platform. Secure, verify, and manage documents
-            with unmatched reliability.
+          All in one Comprehensive document issuing and verification portal.
           </p>
           <div className="flex space-x-6">
             <Link to="/login">
@@ -275,12 +276,8 @@ const DocumentTypesSection = () => (
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {[
-          "Passports",
-          "Driver's Licenses",
-          "National ID Cards",
+          "ID Cards",
           "Birth Certificates",
-          "Academic Transcripts",
-          "Medical Records",
         ].map((doc, index) => (
           <motion.div
             key={index}

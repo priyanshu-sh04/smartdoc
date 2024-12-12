@@ -625,8 +625,8 @@ const Dashboard = () => {
             className="w-24 h-24 rounded-full mr-6 border-4 border-indigo-100"
           />
           <div>
-            <h3 className="text-xl font-semibold">Sapana Pokharal</h3>
-            <p className="text-gray-600">Sapana.Pokharal@example.com</p>
+            <h3 className="text-xl font-semibold">Raghav sharma</h3>
+            <p className="text-gray-600">Raghav.sharma@example.com</p>
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
@@ -757,7 +757,7 @@ const Dashboard = () => {
 
     // Add a new document to suggestedDocs with a loading state
     suggestedDocs.push({
-      title: "Sapana ID Card",
+      title: "Raghav ID Card",
       description: "Processing your ID Card request...",
       icon: "/api/placeholder/100/100", // Placeholder icon
       status: "loading",
@@ -931,7 +931,7 @@ const Dashboard = () => {
 
   const startDocumentRequest = () => {
     const newDoc = {
-      title: "Sapana ID Card",
+      title: "Raghav ID Card",
       description: "Processing your ID Card request...",
       icon: "https://dial4college.blr1.cdn.digitaloceanspaces.com/pro/205/logo/1695981052.PNG",
       status: "loading",
@@ -956,7 +956,7 @@ const Dashboard = () => {
     const loadingInterval = setInterval(() => {
       setSuggestedDocs((prev) =>
         prev.map((doc) => {
-          if (doc.title === "Sapana ID Card") {
+          if (doc.title === "Raghav ID Card") {
             const updatedStages = Array.isArray(doc.verificationStages)
               ? [...doc.verificationStages]
               : [];
@@ -1075,7 +1075,7 @@ const Dashboard = () => {
           <header className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Welcome, Sapana
+                Welcome, Raghav
               </h1>
               <p className="text-gray-600 mt-1">
                 Manage your digital documents securely

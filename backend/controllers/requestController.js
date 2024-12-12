@@ -2,7 +2,23 @@ import Request from "../models/Request.js";
 
 export const requestDoc = async (req, res) => {
   try {
-    const { name, phone, dob, UID, aadhaar, documentType, issuingAuthority } = req.body;
+    const {
+      name,
+      phone,
+      dob,
+      UID,
+      role,
+      aadhaar,
+      documentType,
+      issuingAuthority,
+      parentDetails,
+      placeOfBirth,
+      companyName,
+      startDate,
+      endDate,
+      designation,
+      registrationNumber,
+    } = req.body;
 
     // Validate input
     if (!name || !phone || !aadhaar || !documentType) {
@@ -13,11 +29,19 @@ export const requestDoc = async (req, res) => {
     const newRequest = new Request({
       name,
       phone,
-      dob,
-      UID,
       aadhaar,
       documentType,
       issuingAuthority,
+      role,
+      dob,
+      UID,
+      parentDetails,
+      placeOfBirth,
+      companyName,
+      startDate,
+      endDate,
+      designation,
+      registrationNumber,
       status: "Pending",
       createdAt: new Date(),
     });

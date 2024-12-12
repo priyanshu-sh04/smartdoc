@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,63 +56,130 @@ const DocumentTemplates = () => {
   );
 };
 
-// Bulk Document Issuance Component
 const BulkDocumentIssuance = () => {
-  const [uploadMethod, setUploadMethod] = useState('csv');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  
+  // Ref for the hidden file input
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (selectedFile) {
+      setIsModalOpen(false);
+      setIsSuccess(true);
+      setIsPopupVisible(true);
+
+      // Simulate a delay for the popup
+      setTimeout(() => {
+        setIsPopupVisible(false);
+      }, 3000);
+
+      // Reset file selection
+      setSelectedFile(null);
+
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 3000);
+    }
+  };
+
+  // Function to programmatically trigger file input click
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   return (
     <div className="p-6 space-y-6">
       <h2 className="text-2xl font-bold mb-6">Bulk Document Issuance</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Upload CSV File</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+      {/* Trigger File Upload */}
+      <Button
+        onClick={handleUploadClick}
+        className="mb-4"
+      >
+        Upload CSV
+      </Button>
+
+      {/* Hidden File Input */}
+      <Input
+        type="file"
+        accept=".csv"
+        className="hidden"
+        ref={fileInputRef}
+        onChange={handleFileSelect}
+      />
+
+      {/* Success Message */}
+      {isSuccess && (
+        <Alert className="bg-green-50 text-green-800 border-green-200">
+          <AlertDescription>Documents successfully issued!</AlertDescription>
+        </Alert>
+      )}
+
+      {/* Modal Overlay */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          {/* Modal Content */}
+          <Card className="w-full max-w-md bg-white">
+            <CardHeader>
+              <CardTitle>Upload CSV File</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div className="border-2 border-dashed rounded-lg p-6 text-center">
                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
                 <p className="mt-2 text-sm text-gray-600">
-                  Drag and drop your CSV file here, or click to browse
+                  {selectedFile ? selectedFile.name : 'No file selected'}
                 </p>
-                <Input type="file" accept=".csv" className="hidden" id="csv-upload" />
-                <Button variant="outline" className="mt-4">
-                  Choose File
-                </Button>
               </div>
+
               <Alert>
                 <AlertDescription>
-                  Make sure your CSV follows our template format. 
+                  Make sure your CSV follows our template format.
                   <a href="#" className="underline ml-1">Download template</a>
                 </AlertDescription>
               </Alert>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Connect Database</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Database Connection String</Label>
-                <Input placeholder="postgresql://user:password@localhost:5432/db" />
+              <div className="flex justify-end space-x-2 mt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!selectedFile}
+                >
+                  Submit
+                </Button>
               </div>
-              <div className="space-y-2">
-                <Label>Query</Label>
-                <Input placeholder="SELECT * FROM employees WHERE..." />
-              </div>
-              <Button className="w-full">Connect Database</Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Popup Message */}
+      {isPopupVisible && (
+        <div className="fixed bottom-4 right-4 bg-green-600 text-white py-2 px-4 rounded-lg shadow-lg">
+          CSV successfully uploaded into Database!
+        </div>
+      )}
     </div>
   );
 };
+
 
 // Analytics Component
 const Analytics = () => {

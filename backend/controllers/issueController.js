@@ -1,12 +1,11 @@
 import Request from "../models/Request.js";
-import User from "../models/verifierDB.js";
+import User from "../models/User.js";
 import { createWatermarkedFile } from "../utils/watermark.js";
 import { uploadToIPFS } from "../utils/ipfsUtils.js";
 import {generateDocumentTemplate} from "../utils/generateDocumentTemplate.js"
 import { ethers } from "ethers";
 import DocumentRegistryABI from "../artifacts/contracts/DocumentRegistry.sol/DocumentRegistry.json" with { type: "json" };
 import 'dotenv/config';
-
 
 // Blockchain setup
 const provider = new ethers.JsonRpcProvider(process.env.ETHEREUM_RPC_URL);
@@ -32,6 +31,8 @@ export const issueDocument = async (req, res) => {
       if (!request) {
         return res.status(404).json({ error: "Request not found." });
       }
+
+      console.log('request details - ', request.name, request.phone, request.aadhaar);
   
       // Fetch user details
       const user = await User.findOne({
@@ -39,36 +40,77 @@ export const issueDocument = async (req, res) => {
         phone: request.phone,
         aadhaar: request.aadhaar,
       });
+
+      console.log(user);
   
       if (!user) {
+        console.log('Not found in DB', user)
         return res.status(404).json({ error: "User not found in database." });
       }
   
       // Prepare userData based on document type
-      const userData = documentType === 'ID Card' 
-        ? {
+      let userData;
+      switch(documentType) {
+        case 'ID Card':
+          userData = {
             name: user.name,
             aadhaar: user.aadhaar,
-            issuingAuthority: request.issuingAuthority
-          }
-        : documentType === 'EXPERIENCE_CERTIFICATE'
-        ? {
+            issuingAuthority: request.issuingAuthority,
+            dob: request.dob,
+            photo: request.photo,
+            rollno: request.UID,
+            phone: request.phone
+          };
+          break;
+        
+        case 'Experience Certificate':
+          userData = {
             name: user.name,
-            companyName: request.companyName, // Assume this is added to request model
+            companyName: request.companyName,
             startDate: request.startDate,
             endDate: request.endDate,
             designation: request.designation,
             issuingAuthority: request.issuingAuthority
+          };
+          break;
+        
+        case 'Birth Certificate':
+          // Validate additional birth certificate specific fields
+          if (!request.parentDetails || 
+              !request.parentDetails.fatherName || 
+              !request.parentDetails.motherName || 
+              !request.placeOfBirth ||
+              !request.registrationNumber) {
+            return res.status(400).json({ 
+              error: "Missing required fields for Birth Certificate",
+              requiredFields: [
+                'parentDetails.fatherName', 
+                'parentDetails.motherName', 
+                'placeOfBirth',
+                'registrationNumber'
+              ]
+            });
           }
-        : null;
-  
-      if (!userData) {
-        return res.status(400).json({ error: "Invalid document type" });
+
+          userData = {
+            name: user.name,
+            dob: request.dob,
+            placeOfBirth: request.placeOfBirth,
+            fatherName: request.parentDetails.fatherName,
+            motherName: request.parentDetails.motherName,
+            aadhaar: user.aadhaar,
+            issuingAuthority: request.issuingAuthority,
+            registrationNumber: request.registrationNumber
+          };
+          break;
+        
+        default:
+          return res.status(400).json({ error: "Invalid document type" });
       }
-  
+      console.log(userData);
       // Generate PDF using the new template function
       const pdfBytes = await generateDocumentTemplate(documentType, userData);
-  
+      console.log('TEMPLATE - ',pdfBytes)
       // Add watermark
       const watermarkedPdf = await createWatermarkedFile(
         Buffer.from(pdfBytes),
@@ -134,7 +176,8 @@ export const getRequestedDocs = async (req,res) => {
     const requestedDocs = await Request.find();
     res.json(requestedDocs);
   }
-catch(error){
-  console.error("Cannot fetch requests:", error);
-}
+  catch(error){
+    console.error("Cannot fetch requests:", error);
+    res.status(500).json({ error: "Unable to fetch requested documents" });
+  }
 }

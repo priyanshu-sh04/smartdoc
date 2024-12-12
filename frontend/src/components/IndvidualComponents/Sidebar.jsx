@@ -6,7 +6,6 @@ const Sidebar = ({ selectedTab, setSelectedTab }) => {
     { name: "Home", icon: Home, tab: "home" },
     { name: "Documents", icon: FileText, tab: "documents" },
     { name: "Search", icon: Search, tab: "search" },
-    { name: "Storage", icon: HardDrive, tab: "storage" },
     { name: "Settings", icon: Settings, tab: "settings" },
   ];
 

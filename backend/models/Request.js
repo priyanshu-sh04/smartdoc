@@ -13,7 +13,7 @@ const requestSchema = new mongoose.Schema({
   documentHash: { type: String },
   documentType: {
     type: String,
-    enum: ["ID Card", "Experience Certificate"],
+    enum: ["ID Card", "Experience Certificate", "Birth Certificate"],
     required: true,
   },
   // these fields will only be filled if experience certificate is selected
@@ -21,6 +21,14 @@ const requestSchema = new mongoose.Schema({
   startDate: Date,
   endDate: Date,
   designation: String,
+  // only for birth certificate
+  registrationNumber: { type: String },
+  parentDetails: {
+    fatherName: String,
+    motherName: String,
+  },
+  placeOfBirth: String,
+  verificationDetails: Object,
 });
 
 export default mongoose.model("Request", requestSchema);

@@ -1,7 +1,7 @@
 import { Client } from "@gradio/client";
 import { promises as fs } from "fs";
 
-export const processDocumentWithOvis = async (imageBuffer) => {
+export const processDocumentWithOvis = async (imageBuffer, prompt = "Extract personal details from document") => {
   try {
     const client = await Client.connect("AIDC-AI/Ovis1.6-Llama3.2-3B");
 
@@ -10,7 +10,7 @@ export const processDocumentWithOvis = async (imageBuffer) => {
 
     // Create a temporary file path
     const tempImagePath = "./temp/document.png";
-    
+
     // Write the image buffer to a temporary file
     await fs.writeFile(tempImagePath, imageBuffer);
 
@@ -20,7 +20,7 @@ export const processDocumentWithOvis = async (imageBuffer) => {
     });
 
     const result = await client.predict("/ovis_chat", {
-      chatbot: [["Extract personal details in JSON format only, nothing else", null]],
+      chatbot: [[prompt, null]],
       image_input: imageFile,
     });
 

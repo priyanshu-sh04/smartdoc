@@ -15,8 +15,8 @@ const Settings = () => {
             className="w-24 h-24 rounded-full mr-6 border-4 border-indigo-100"
           />
           <div>
-            <h3 className="text-xl font-semibold">Sapana Pokharal</h3>
-            <p className="text-gray-600">Sapana.Pokharal@example.com</p>
+            <h3 className="text-xl font-semibold">Raghav sharma</h3>
+            <p className="text-gray-600">Raghav.sharma@example.com</p>
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-4">

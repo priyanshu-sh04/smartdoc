@@ -15,6 +15,7 @@ import MyDocuments from "./pages/MyDocs";
 import Profile from "./pages/Profile";
 import Analytics from "./pages/Analytics";
 import DocumentRequests from "./pages/DocumentRequests";
+import Register from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
     path: "/document-requests",
     element: <DocumentRequests />,
     },
+    {
+      path: "/signup",
+      element: <Register />,
+      },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const verifierSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   aadhaar: { type: String, required: true },
 });
 
-export default mongoose.model("verifiedRecord", verifierSchema);
+export default mongoose.model("User", userSchema);
