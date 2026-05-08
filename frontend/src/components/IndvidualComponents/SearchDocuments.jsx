@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Search, ExternalLink, ArrowRight, ArrowLeft } from "lucide-react";
+import {
+  Search,
+  ExternalLink,
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle2,
+  Database,
+} from "lucide-react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,12 +17,14 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 
 const SearchDocuments = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState("role");
+  const [modalTab, setModalTab] = useState("request");
   const [requestForm, setRequestForm] = useState({
     role: "",
     name: "",
@@ -30,6 +39,11 @@ const SearchDocuments = () => {
     aadhaar: "",
     documentType: "",
     issuingAuthority: "",
+    companyName: "",
+    startDate: "",
+    endDate: "",
+    designation: "",
+    registrationNumber: "",
   });
   const [selectedDocument, setSelectedDocument] = useState(null);
 
@@ -40,11 +54,15 @@ const SearchDocuments = () => {
       description: "Issuing digital academic documents through SmartDoc",
       governmentType: "State Government",
       documentTypes: {
-        student: ["ID Card", "Enrollment Certificate"],
-        employee: [
-          "Experience Certificate",
-          "Service Certificate",
-          "Salary Certificate",
+        student: ["ID Card"],
+        employee: ["Experience Certificate"],
+      },
+      specialRequirements: {
+        "Experience Certificate": [
+          "companyName",
+          "startDate",
+          "endDate",
+          "designation",
         ],
       },
     },
@@ -66,6 +84,69 @@ const SearchDocuments = () => {
     },
   ];
 
+  const testCredentials = {
+    "Gurugram University, Gurugram": [
+      {
+        id: "gu-raghav-confirmed",
+        status: "Confirmed",
+        statusIcon: CheckCircle2,
+        statusClass:
+          "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300",
+        note: "Confirmed by an existing issued and verified ID Card request in MongoDB.",
+        formData: {
+          role: "student",
+          documentType: "ID Card",
+          name: "Raghav Sharma",
+          phone: "7042019181",
+          aadhaar: "987456321123",
+          dob: "2004-07-25",
+          UID: "25465",
+        },
+      },
+      {
+        id: "gu-priyanshu-db",
+        status: "DB Match",
+        statusIcon: Database,
+        statusClass:
+          "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300",
+        note: "Present in both User and verifierDB collections, but not confirmed by existing request history.",
+        formData: {
+          role: "student",
+          documentType: "ID Card",
+          name: "Priyanshu",
+          phone: "9783465208",
+          aadhaar: "785736369216",
+          UID: "GU-TEST-001",
+        },
+      },
+    ],
+    "Municipal Corporation of Delhi": [
+      {
+        id: "mcd-raghav-confirmed",
+        status: "Confirmed",
+        statusIcon: CheckCircle2,
+        statusClass:
+          "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300",
+        note: "Confirmed by existing verified Birth Certificate requests in MongoDB.",
+        formData: {
+          role: "citizen",
+          documentType: "Birth Certificate",
+          name: "Raghav Sharma",
+          phone: "7042019181",
+          aadhaar: "987456321123",
+          dob: "2004-07-25",
+          UID: "REG-123456",
+          registrationNumber: "REG-123456",
+          placeOfBirth: "New Delhi",
+          parentDetails: {
+            fatherName: "Pradeep Sharma",
+            motherName: "Meenu Sharma",
+          },
+        },
+      },
+    ],
+  };
+
   const filteredData = authorities.filter(
     (doc) =>
       doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -74,7 +155,7 @@ const SearchDocuments = () => {
 
   const openRequestModal = (doc) => {
     setSelectedDocument(doc);
-    setRequestForm((prev) => ({
+    setRequestForm({
       role: "",
       name: "",
       phone: "",
@@ -88,8 +169,14 @@ const SearchDocuments = () => {
       aadhaar: "",
       documentType: "",
       issuingAuthority: doc.title,
-    }));
+      companyName: "",
+      startDate: "",
+      endDate: "",
+      designation: "",
+      registrationNumber: "",
+    });
     setModalStep("role");
+    setModalTab("request");
     setIsModalOpen(true);
   };
 
@@ -128,6 +215,32 @@ const SearchDocuments = () => {
         [name]: value,
       }));
     }
+  };
+
+  const applyTestCredential = (credential) => {
+    setRequestForm((prev) => ({
+      ...prev,
+      issuingAuthority: selectedDocument.title,
+      role: credential.formData.role,
+      documentType: credential.formData.documentType,
+      name: credential.formData.name || "",
+      phone: credential.formData.phone || "",
+      aadhaar: credential.formData.aadhaar || "",
+      dob: credential.formData.dob || "",
+      UID: credential.formData.UID || "",
+      companyName: credential.formData.companyName || "",
+      startDate: credential.formData.startDate || "",
+      endDate: credential.formData.endDate || "",
+      designation: credential.formData.designation || "",
+      registrationNumber: credential.formData.registrationNumber || "",
+      placeOfBirth: credential.formData.placeOfBirth || "",
+      parentDetails: {
+        fatherName: credential.formData.parentDetails?.fatherName || "",
+        motherName: credential.formData.parentDetails?.motherName || "",
+      },
+    }));
+    setModalStep("details");
+    setModalTab("request");
   };
 
   const validateForm = () => {
@@ -213,7 +326,11 @@ const SearchDocuments = () => {
         aadhaar: "",
         documentType: "",
         issuingAuthority: "",
-        registrationNumber: "", // Add this line
+        companyName: "",
+        startDate: "",
+        endDate: "",
+        designation: "",
+        registrationNumber: "",
       });
       setIsModalOpen(false);
     } catch (error) {
@@ -339,6 +456,42 @@ const SearchDocuments = () => {
           onChange={handleInputChange}
           placeholder="Unique Document ID (Roll Number, Employee ID, Registration Number, etc.)"
         />
+        {requestForm.documentType === "Experience Certificate" && (
+          <>
+            <Input
+              name="companyName"
+              value={requestForm.companyName}
+              onChange={handleInputChange}
+              placeholder="Company Name"
+              required
+            />
+            <Input
+              name="designation"
+              value={requestForm.designation}
+              onChange={handleInputChange}
+              placeholder="Designation"
+              required
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Input
+                name="startDate"
+                value={requestForm.startDate}
+                onChange={handleInputChange}
+                type="date"
+                placeholder="Start Date"
+                required
+              />
+              <Input
+                name="endDate"
+                value={requestForm.endDate}
+                onChange={handleInputChange}
+                type="date"
+                placeholder="End Date"
+                required
+              />
+            </div>
+          </>
+        )}
         <Input
           name="aadhaar"
           value={requestForm.aadhaar}
@@ -368,6 +521,81 @@ const SearchDocuments = () => {
           Submit Request <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </form>
+    );
+  };
+
+  const renderTestCredentials = () => {
+    const credentials = testCredentials[selectedDocument?.title] || [];
+
+    if (credentials.length === 0) {
+      return (
+        <div className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+          No test credentials are configured for this authority.
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="rounded-lg border bg-muted/30 p-3 text-sm text-muted-foreground">
+          These entries come from the current local Mongo data. `Confirmed`
+          means there is already successful request history. `DB Match` means
+          the user exists in the collections the backend checks.
+        </div>
+        {credentials.map((credential) => {
+          const StatusIcon = credential.statusIcon;
+          return (
+            <div key={credential.id} className="rounded-lg border p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium ${credential.statusClass}`}
+                    >
+                      <StatusIcon className="h-3.5 w-3.5" />
+                      {credential.status}
+                    </span>
+                    <span className="text-sm font-medium text-foreground">
+                      {credential.formData.documentType}
+                    </span>
+                  </div>
+                  <div className="grid gap-2 text-sm text-muted-foreground sm:grid-cols-2">
+                    <div>
+                      <div className="font-medium text-foreground">
+                        {credential.formData.name}
+                      </div>
+                      <div>Phone: {credential.formData.phone}</div>
+                      <div>Aadhaar: {credential.formData.aadhaar}</div>
+                    </div>
+                    <div>
+                      <div>Role: {credential.formData.role}</div>
+                      {credential.formData.UID && (
+                        <div>UID: {credential.formData.UID}</div>
+                      )}
+                      {credential.formData.registrationNumber && (
+                        <div>
+                          Registration: {credential.formData.registrationNumber}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {credential.note}
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="shrink-0"
+                  onClick={() => applyTestCredential(credential)}
+                >
+                  Apply
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     );
   };
 
@@ -425,7 +653,7 @@ const SearchDocuments = () => {
 
       {/* Document Request Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {modalStep === "role" && "Select Your Role"}
@@ -442,9 +670,20 @@ const SearchDocuments = () => {
             </DialogDescription>
           </DialogHeader>
 
-          {modalStep === "role" && selectedDocument && renderRoleSelection()}
-          {modalStep === "documentType" && renderDocumentTypeSelection()}
-          {modalStep === "details" && renderDetailsForm()}
+          <Tabs value={modalTab} onValueChange={setModalTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="request">Request Form</TabsTrigger>
+              <TabsTrigger value="credentials">Test Credentials</TabsTrigger>
+            </TabsList>
+            <TabsContent value="request" className="pt-2">
+              {modalStep === "role" && selectedDocument && renderRoleSelection()}
+              {modalStep === "documentType" && renderDocumentTypeSelection()}
+              {modalStep === "details" && renderDetailsForm()}
+            </TabsContent>
+            <TabsContent value="credentials" className="pt-2">
+              {renderTestCredentials()}
+            </TabsContent>
+          </Tabs>
         </DialogContent>
       </Dialog>
     </div>
