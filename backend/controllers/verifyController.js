@@ -222,5 +222,9 @@ export const getVerificationRequests = async (req, res) => {
       .json({ message: "Requests fetched successfully", requests });
   } catch (error) {
     console.log("Can't fetch verification requests", error);
+    res.status(500).json({
+      error: "Unable to fetch verification requests",
+      details: error.message,
+    });
   }
 };

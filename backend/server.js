@@ -31,9 +31,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Connect to the database
-connectDB();
-
 // Middleware to log requests
 app.use((req, res, next) => {
   console.log("Request Method:", req.method);
@@ -47,6 +44,16 @@ app.use("/api", requestRoute);
 app.use("/api", issueRoute);
 app.use("/api", verifyRoute);
 
-// Start Server
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5000;
+
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  } catch (error) {
+    console.error("Failed to start server:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();

@@ -1,11 +1,19 @@
-import pkg from "@pdftron/pdfnet-node";
-const { PDFNet } = pkg;
 import { promises as fs } from "fs";
+import os from "os";
+import path from "path";
 
 export const convertPdfToImage = async (pdfBuffer) => {
+  let PDFNet;
+  let tempPdfPath;
+  let outputPath;
+
   try {
-    // Write the buffer to a temporary PDF file
-    const tempPdfPath = "./temp1.pdf";
+    ({ PDFNet } = await import("@pdftron/pdfnet-node"));
+
+    tempPdfPath = path.join(
+      os.tmpdir(),
+      `smartdoc-${Date.now()}-${Math.random().toString(36).slice(2)}.pdf`
+    );
     await fs.writeFile(tempPdfPath, pdfBuffer);
 
     // Main conversion function
@@ -23,7 +31,10 @@ export const convertPdfToImage = async (pdfBuffer) => {
       const page = await doc.getPage(1);
 
       // Output image path
-      const outputImagePath = "./converted_page.png";
+      const outputImagePath = path.join(
+        os.tmpdir(),
+        `smartdoc-${Date.now()}-${Math.random().toString(36).slice(2)}.png`
+      );
 
       // Export the page as a PNG
       await draw.export(page, outputImagePath, "PNG");
@@ -32,7 +43,7 @@ export const convertPdfToImage = async (pdfBuffer) => {
     };
 
     // Run the conversion with your license key
-    const outputPath = await PDFNet.runWithCleanup(
+    outputPath = await PDFNet.runWithCleanup(
       main,
       process.env.PDFTRON_LICENSE_KEY // Store your license in environment variables
     );
@@ -41,8 +52,8 @@ export const convertPdfToImage = async (pdfBuffer) => {
     const imageBuffer = await fs.readFile(outputPath);
 
     // Clean up temporary files
-    await fs.unlink(tempPdfPath);
-    await fs.unlink(outputPath);
+    await fs.unlink(tempPdfPath).catch(() => {});
+    await fs.unlink(outputPath).catch(() => {});
 
     return imageBuffer;
   } catch (error) {
@@ -50,6 +61,14 @@ export const convertPdfToImage = async (pdfBuffer) => {
     throw new Error(`PDF to Image conversion failed: ${error.message}`);
   } finally {
     // Shutdown PDFNet
-    await PDFNet.shutdown();
+    if (PDFNet) {
+      await PDFNet.shutdown().catch(() => {});
+    }
+    if (tempPdfPath) {
+      await fs.unlink(tempPdfPath).catch(() => {});
+    }
+    if (outputPath) {
+      await fs.unlink(outputPath).catch(() => {});
+    }
   }
 };
