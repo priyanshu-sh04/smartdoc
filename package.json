@@ -1,0 +1,12 @@
+{
+  "name": "smartdoc",
+  "version": "1.0.0",
+  "description": "The **Document Verification System** is a backend service for securely handling document uploads, issuing digital certificates, and verifying documents using IPFS, Google AI OCR, and MongoDB. This project ensures decentralized storage and tamper-proof verification for various document types.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
