@@ -5,6 +5,9 @@ import cors from "cors";
 import verifyRoute from "./routes/verify.js";
 import requestRoute from "./routes/request.js";
 import issueRoute from "./routes/issue.js";
+import dns from "dns";
+
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const app = express();
 
